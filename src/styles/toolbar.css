@@ -1,0 +1,228 @@
+/* ==========================================================================
+   Barra de escolhas no topo: combobox, tom em grade, velocidade e resumo.
+   Flat: superfícies sólidas e bordas finas, sem sombras.
+   ========================================================================== */
+
+.toolbar {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-2);
+  margin-bottom: var(--s-6);
+}
+
+@media (min-width: 760px) {
+  .toolbar {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Gatilho dos combobox: rótulo pequeno em cima, valor em destaque embaixo. */
+.cb {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  width: 100%;
+  min-width: 0;
+  min-height: 56px;
+  padding: var(--s-2) var(--s-3) var(--s-2) var(--s-4);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  text-align: left;
+  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+.cb:hover {
+  background: var(--surface-2);
+}
+
+.cb[data-state='open'],
+.cb:focus-visible {
+  border-color: var(--accent);
+}
+
+.cb__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.cb__label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.cb__value {
+  font-size: var(--fs-md);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-variant-numeric: tabular-nums;
+}
+
+.cb__value small {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.cb__icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  color: var(--muted);
+}
+
+/* Menus (pop-ups do Radix). Sem sombra: borda e fundo sólido. */
+.cb__menu {
+  z-index: 120;
+  min-width: var(--radix-select-trigger-width, 180px);
+  max-height: min(60vh, 420px);
+  overflow: auto;
+  padding: var(--s-1);
+  border-radius: var(--r-md);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: none;
+}
+
+.cb__menu--grid {
+  width: 268px;
+  padding: var(--s-3);
+  min-width: 0;
+}
+
+.cb__list {
+  padding: 0;
+}
+
+.cb__item {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: var(--s-2) var(--s-3);
+  border-radius: var(--r-sm);
+  font-size: var(--fs-md);
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+}
+
+.cb__item[data-highlighted] {
+  background: var(--surface-2);
+}
+
+.cb__item[data-state='checked'] {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Tom: 4 colunas × 3 linhas, todas as notas à vista. */
+.keygrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--s-2);
+}
+
+.keygrid__btn {
+  height: 48px;
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+  font-size: var(--fs-md);
+  font-weight: 600;
+  transition: background-color var(--dur) var(--ease);
+}
+
+.keygrid__btn:hover {
+  background: var(--surface-3);
+}
+
+.keygrid__btn.is-on {
+  background: var(--text);
+  color: var(--bg);
+}
+
+/* Velocidade: mesmo bloco dos combobox, com os passos à direita. */
+.cb--stepper {
+  cursor: default;
+  gap: var(--s-1);
+  padding-right: var(--s-2);
+}
+
+.cb--stepper:hover {
+  background: var(--surface);
+}
+
+.cb__steps {
+  display: flex;
+  gap: var(--s-1);
+}
+
+.step {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.step:hover {
+  background: var(--surface-3);
+}
+
+.step:disabled {
+  opacity: 0.35;
+}
+
+/* Resumo da escala atual, logo abaixo da barra. */
+.summary {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s-4);
+  margin-bottom: var(--s-6);
+}
+
+.summary__title {
+  margin: 0;
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.summary__desc {
+  margin: var(--s-1) 0 0;
+  font-size: var(--fs-sm);
+  color: var(--muted);
+}
+
+.summary .link {
+  margin-top: 0;
+  white-space: nowrap;
+}
+
+@media (max-width: 520px) {
+  .summary__title {
+    font-size: var(--fs-lg);
+  }
+}
+
+.cb__prefix {
+  display: inline-block;
+  min-width: 22px;
+  margin-right: var(--s-2);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}

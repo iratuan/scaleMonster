@@ -1,0 +1,457 @@
+/* ==========================================================================
+   Responsividade, splash e áreas seguras.
+   Faixas: celular (< 600px), tablet (600–1023px), computador (≥ 1024px).
+   ========================================================================== */
+
+/* ---------- Splash ---------- */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-4);
+  background: var(--bg);
+  color: var(--text);
+  transition: opacity 320ms var(--ease);
+}
+
+.splash--out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.splash__mark {
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  border-radius: var(--r-xl);
+  background: var(--surface);
+  color: var(--accent);
+  animation: splash-in 520ms var(--ease) both;
+}
+
+.splash__title {
+  margin: 0;
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  animation: splash-in 520ms 120ms var(--ease) both;
+}
+
+.splash__bar {
+  width: 120px;
+  height: 3px;
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.splash__bar span {
+  display: block;
+  width: 40%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+  animation: splash-run 1100ms var(--ease) infinite;
+}
+
+@keyframes splash-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+}
+
+@keyframes splash-run {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(260%);
+  }
+}
+
+/* ---------- Área segura (iPhone, entalhe, barra do sistema) e altura real ---------- */
+.app {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding-left: max(var(--s-4), env(safe-area-inset-left));
+  padding-right: max(var(--s-4), env(safe-area-inset-right));
+  padding-bottom: max(var(--s-8), env(safe-area-inset-bottom));
+}
+
+.header {
+  padding-top: env(safe-area-inset-top);
+}
+
+/* ---------- Celular: uma coluna, alvos de toque grandes, braço com rolagem indicada ---------- */
+@media (max-width: 599px) {
+  .header__title {
+    font-size: var(--fs-md);
+  }
+  .summary {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-2);
+  }
+  .summary__title {
+    font-size: var(--fs-lg);
+  }
+  .chips {
+    margin-left: calc(var(--s-4) * -1 - env(safe-area-inset-left));
+    margin-right: calc(var(--s-4) * -1 - env(safe-area-inset-right));
+  }
+  /* Indica que o braço rola na horizontal. */
+  .fb__scroll {
+    -webkit-mask-image: linear-gradient(to right, #000 88%, transparent);
+    mask-image: linear-gradient(to right, #000 88%, transparent);
+  }
+  .fb__board {
+    min-width: 540px;
+  }
+  .fb--compact .fb__board {
+    min-width: 460px;
+  }
+  .note {
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+  }
+  .fb--compact .note {
+    width: 22px;
+    height: 22px;
+    font-size: 9px;
+  }
+  /* Ajustes em folha inferior, ocupando quase toda a altura. */
+  .panel--sheet {
+    max-height: 92dvh;
+    border-radius: var(--r-xl) var(--r-xl) 0 0;
+  }
+}
+
+/* ---------- Tablet: duas colunas nas posições, barra em 3 colunas ---------- */
+@media (min-width: 600px) and (max-width: 1023px) {
+  .app {
+    padding-top: var(--s-5);
+  }
+  .toolbar {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .positions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .fb__board {
+    min-width: 0;
+  }
+  .fb__scroll {
+    overflow-x: visible;
+  }
+  .fb--compact .fb__board {
+    min-width: 0;
+  }
+}
+
+/* ---------- Computador: layout largo, ajustes em diálogo centralizado ---------- */
+@media (min-width: 1024px) {
+  .app {
+    padding-top: var(--s-6);
+  }
+  .page {
+    max-width: 1080px;
+  }
+  .header {
+    max-width: 1080px;
+  }
+  .chips {
+    flex-wrap: wrap;
+    overflow: visible;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .toolbar {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .positions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .fb__board {
+    min-width: 0;
+  }
+  .fb__scroll {
+    overflow-x: visible;
+  }
+  .fb--compact .fb__board {
+    min-width: 0;
+  }
+  .overlay--sheet {
+    align-items: center;
+  }
+  .panel--sheet {
+    border-radius: var(--r-xl);
+    max-height: 86vh;
+  }
+}
+
+/* ---------- Telas sensíveis ao toque: alvos de pelo menos 44px ---------- */
+@media (pointer: coarse) {
+  .chip,
+  .keygrid__btn,
+  .cb,
+  .play,
+  .icon-btn,
+  .step,
+  .btn,
+  .row {
+    min-height: 44px;
+  }
+  .play {
+    width: 48px;
+    height: 48px;
+  }
+  .icon-btn {
+    width: 44px;
+    height: 44px;
+  }
+  .step {
+    width: 36px;
+    height: 36px;
+  }
+  .seg button {
+    min-height: 36px;
+  }
+}
+
+/* ---------- Preferência de movimento reduzido: splash sem animação ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .splash__bar span {
+    animation: none;
+    width: 100%;
+  }
+}
+
+/* O corte do tabuleiro escondia a nota do último traste: deixa a nota sair da coluna. */
+.fb__board {
+  overflow: visible;
+}
+
+/* ---------- Destaque da nota em execução ----------
+   Tocando: branca, preenchida, maior, com anel verde (a raiz é verde, então não se confunde).
+   Próxima: só contorno verde. */
+.fb .note.note--play {
+  background: var(--note-on);
+  color: var(--note-on-ink);
+  transform: scale(1.25);
+  box-shadow: 0 0 0 4px var(--accent), 0 0 0 7px var(--accent-soft);
+}
+
+.fb .note.note--next:not(.note--play) {
+  background: transparent;
+  color: var(--accent);
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+/* ---------- Aviso do desafio (visível durante o treino) ---------- */
+.challenge-bar {
+  margin: 0 0 var(--s-5);
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-md);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  line-height: 1.4;
+  background: var(--surface);
+}
+
+.challenge-bar--ok {
+  color: var(--muted);
+}
+
+.challenge-bar--warn {
+  color: var(--text);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.challenge-bar--error {
+  color: var(--bad);
+  box-shadow: inset 3px 0 0 var(--bad);
+}
+
+/* ---------- Aviso do desafio (visível durante o treino) ---------- */
+.challenge-bar {
+  margin: 0 0 var(--s-5);
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-md);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  line-height: 1.4;
+  background: var(--surface);
+}
+
+.challenge-bar--ok {
+  color: var(--muted);
+}
+
+.challenge-bar--warn {
+  color: var(--text);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.challenge-bar--error {
+  color: var(--bad);
+  box-shadow: inset 3px 0 0 var(--bad);
+}
+
+/* ---------- Menu de ferramentas (metrônomo e afinador) ---------- */
+.tools-menu {
+  z-index: 130;
+  display: flex;
+  flex-direction: column;
+  min-width: 180px;
+  padding: var(--s-1);
+  border-radius: var(--r-md);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.tools-menu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  min-height: 44px;
+  padding: var(--s-2) var(--s-3);
+  border-radius: var(--r-sm);
+  font-size: var(--fs-md);
+  font-weight: 500;
+  text-align: left;
+}
+
+.tools-menu__item:hover,
+.tools-menu__item:focus-visible {
+  background: var(--surface-2);
+}
+
+/* Feedback do acerto/erro mais legível; cartão com contagem em linha separada. */
+.fb__feedback {
+  font-size: 15px;
+  animation-duration: 0.8s;
+}
+
+.pos__meta--count {
+  margin-top: 2px;
+  color: var(--faint);
+}
+
+/* ---------- Braço deslizante: 5 posições lado a lado, rolando ---------- */
+.neck {
+  min-width: 0;
+}
+
+.neck__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s-3);
+  margin-bottom: var(--s-3);
+}
+
+.neck__title {
+  margin: 2px 0 0;
+  font-size: var(--fs-md);
+  font-weight: 600;
+}
+
+.neck__range {
+  color: var(--muted);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.neck__meta {
+  margin: 2px 0 0;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+.neck__viewport {
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  padding: var(--s-4) 0;
+  touch-action: pan-y;
+}
+
+.neck__track {
+  display: flex;
+  transition: transform 420ms var(--ease);
+}
+
+.neck__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  padding: 0 var(--s-4);
+}
+
+.neck__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-4);
+  margin-top: var(--s-3);
+}
+
+.neck__arrow {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.neck__arrow:disabled {
+  opacity: 0.3;
+}
+
+.neck__dots {
+  display: flex;
+  gap: var(--s-2);
+}
+
+.neck__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--surface-3);
+  transition: background-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.neck__dot.is-on {
+  background: var(--text);
+  transform: scale(1.2);
+}
+
+.neck__follow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  margin-top: var(--s-3);
+  font-size: var(--fs-sm);
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .neck__track {
+    transition: none;
+  }
+}
+
+/* Opção de acompanhar: interruptor e texto juntos, à esquerda. */
+.neck__follow {
+  justify-content: flex-start;
+}

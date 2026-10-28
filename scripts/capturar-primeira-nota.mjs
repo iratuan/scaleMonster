@@ -1,0 +1,14 @@
+import puppeteer from 'puppeteer-core';
+const b = await puppeteer.launch({ executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe', headless: true, args: ['--no-sandbox'] });
+const p = await b.newPage();
+await p.setViewport({ width: 1280, height: 860 });
+await p.goto('http://127.0.0.1:4173/', { waitUntil: 'networkidle0' });
+await p.evaluate(() => localStorage.setItem('tutor_escalas_v3_settings', JSON.stringify({ state: { lang: 'pt', instrument: 'baixo', stringCount: 4, strings: 'all', root: 'C', category: 'Pentatônica', mode: 'Maior', exercise: 1, bpm: 80, skin: 'dark' }, version: 2 })));
+await p.reload({ waitUntil: 'networkidle0' });
+const card = (await p.$$('.positions article'))[0];
+await (await card.$('.play')).click();
+await new Promise((r) => setTimeout(r, 3150));
+await p.screenshot({ path: 'docs/evidencias/telas/primeira-nota-baixo.png' });
+await (await card.$('.play')).click();
+await b.close();
+console.log('ok');

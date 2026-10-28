@@ -1,0 +1,24 @@
+tela celular-escuro: estouro horizontal = 0px
+tela tablet-retrato: estouro horizontal = 0px
+tela computador-1440: estouro horizontal = 0px
+tela desktop-escuro-guitarra: estouro horizontal = 0px
+tela desktop-claro-guitarra: estouro horizontal = 0px
+tela desktop-baixo: estouro horizontal = 0px
+tela desktop-ukulele: estouro horizontal = 0px
+tela desktop-cavaco: estouro horizontal = 0px
+tela desktop-madeira-violao: estouro horizontal = 0px
+tela desktop-violao-7-cordas: estouro horizontal = 0px
+tela desktop-baixo-6-cordas: estouro horizontal = 0px
+tablet metronomo: capturado
+splash: capturada
+funcionalidade funcao-combobox-tom: capturada
+funcionalidade funcao-combobox-exercicio: capturada
+funcionalidade funcao-ajustes: capturada
+funcionalidade funcao-metronomo: capturada
+funcionalidade funcao-metronomo-tocando: capturada
+funcionalidade funcao-afinador: capturada
+funcionalidade funcao-ajuda: capturada
+funcionalidade funcao-backing-track: capturada
+funcionalidade funcao-contagem: capturada
+funcionalidade funcao-reproducao: capturada (áudio ativo, sem microfone)
+erros de execução: nenhum

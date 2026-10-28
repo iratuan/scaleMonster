@@ -1,0 +1,302 @@
+import ar from './i18n/ar.json';
+import bn from './i18n/bn.json';
+import de from './i18n/de.json';
+import en from './i18n/en.json';
+import es from './i18n/es.json';
+import fr from './i18n/fr.json';
+import hi from './i18n/hi.json';
+import pt from './i18n/pt.json';
+import ru from './i18n/ru.json';
+import ur from './i18n/ur.json';
+import zh from './i18n/zh.json';
+
+type Dict = Record<string, string | string[]>;
+
+/** Textos novos desta versão (pt/en). Idiomas sem a chave caem para inglês. */
+const EXTRA: Record<'pt' | 'en', Dict> = {
+  pt: {
+    lbl_auto_bpm: 'Aumento automático',
+    lbl_auto_every: 'a cada',
+    lbl_volume: 'Volume',
+    lbl_theme: 'Tema',
+    lbl_language: 'Idioma',
+    lbl_settings: 'Ajustes',
+    btn_help: 'Ajuda',
+    btn_close: 'Fechar',
+    btn_start: 'Iniciar',
+    btn_cancel: 'Cancelar',
+    btn_continue: 'Continuar praticando',
+    btn_clear: 'Limpar',
+    lbl_challenge_hint: 'Toque a escala e o app avalia cada nota pelo microfone.',
+    mic_title: 'Modo Desafio',
+    mic_tip_web: 'Use fones de ouvido para que o som da escala não interfira na captação.',
+    mic_tip_no_headset: 'Sem fones! O som da escala será silenciado para não interferir na captação.',
+    mic_tip_headset: 'Fones detectados. Você ouvirá a escala sem interferir na captação.',
+    mic_calibrating: 'Calibrando o microfone… fique em silêncio.',
+    mic_unavailable: 'Microfone indisponível. Verifique a permissão do navegador.',
+    hit_label: 'PERFEITO!',
+    miss_label: 'ERROU',
+    score_summary: 'Resumo da rodada',
+    score_accuracy: 'Taxa de acerto',
+    score_hits: 'Certas',
+    score_misses: 'Erradas',
+    score_retry: 'Tente novamente',
+    score_good: 'Bom trabalho',
+    score_great: 'Excelente',
+    score_amazing: 'Incrível',
+    trends_title: 'Tendências',
+    trend_time: 'Praticado',
+    trend_favorite: 'Favorita',
+    trend_focus: 'Sugestão de foco',
+    trend_focus_weak: 'Taxa de erro alta. Dê mais atenção a: {notes}',
+    trend_focus_ok: 'Sua taxa de acerto pode melhorar aqui se comparada às outras escalas.',
+    confirm_clear: 'Zerar todo o histórico de treino?',
+    history_reset: 'Histórico reiniciado',
+    note_at: 'Corda {s} · Traste {f}',
+    free_scale: 'Escala livre',
+    fingering_hint: 'Dedo sugerido',
+    empty_positions: 'Nenhuma nota desta escala na janela.',
+    inst_guitarra: 'Guitarra',
+    inst_violao: 'Violão',
+    inst_baixo: 'Baixo',
+    inst_ukulele: 'Ukulele',
+    inst_cavaco: 'Cavaco',
+    lbl_instrument: 'Instrumento',
+    lbl_full_scale: 'Escala completa',
+    lbl_positions: 'Posições',
+    lbl_practice: 'Prática',
+    skin_madeira: 'Madeira',
+    lbl_metronome: 'Metrônomo',
+    lbl_show_ghost: 'Mostrar outras notas da escala',
+    metro_title: 'Metrônomo',
+    metro_tap: 'Tocar',
+    metro_tap_hint: 'Toque no ritmo para definir o andamento',
+    metro_meter: 'Compasso',
+    metro_sub: 'Divisão',
+    metro_sub_1: 'Só o tempo',
+    metro_sub_2: 'Binária · colcheias',
+    metro_sub_3: 'Ternária · tercinas',
+    metro_sub_4: 'Quaternária · semicolcheias',
+    metro_sub_5: 'Quintina',
+    metro_sub_6: 'Sextina',
+    metro_accent: 'Acento no primeiro tempo',
+    metro_ramp: 'Modo treino (acelerar aos poucos)',
+    metro_ramp_step: 'Variação',
+    metro_ramp_every: 'a cada',
+    metro_ramp_target: 'até',
+    metro_bars: 'compassos',
+    metro_ticks: 'divisões por compasso',
+    cycle_label: 'Ciclo',
+    lbl_debug: 'Depuração (log no console)',
+    chal_active: 'Desafio ativo: toque cada nota no tempo e na altura certos.',
+    tools_title: 'Ferramentas',
+    neck_prev: 'Posição anterior',
+    neck_next: 'Próxima posição',
+    neck_follow: 'Acompanhar a execução (rola o braço)',
+    chal_error: 'Microfone indisponível: o desafio não pontua. Libere o microfone no navegador.',
+    chal_no_headset: 'Use fones: sem eles, o som do app pode ser captado pelo microfone e contar como acerto.',
+    chal_criterion: 'Acerto: a nota soa com ataque novo, a até 60 centavos da altura, dentro de 450 ms (ou 90% da nota).',
+    debug_hint: 'Registra cada nota: posição, nota, corda, traste e frequência.',
+    notes_per_cycle: '{n} notas por ciclo',
+    metro_silent: 'Compasso mudo',
+    metro_silent_off: 'Desligado',
+    metro_silent_every: 'um a cada {n} compassos',
+    metro_start: 'Iniciar',
+    metro_stop: 'Parar',
+    metro_explain: 'Com o compasso mudo você toca sem o clique e mantém o tempo sozinho.',
+    lbl_string_count: 'Nº de cordas',
+    lbl_string_group: 'Grupo de cordas',
+    tuner_title: 'Afinador',
+    tuner_listen: 'Toque uma corda',
+    tuner_in_tune: 'Afinado',
+    tuner_low: 'Grave demais: aperte a corda',
+    tuner_high: 'Agudo demais: afrouxe a corda',
+    tuner_cents: 'centavos',
+    tuner_strings: 'Cordas',
+    tuner_ref: 'Referência A4',
+    tuner_start: 'Ativar microfone',
+    tuner_stop: 'Parar',
+    tuner_hint: 'Use um ambiente silencioso e toque uma corda por vez. Toque numa corda da lista para fixar o alvo.',
+    ghost_hint: 'Mantém a escala visível, com destaque menor que o exercício.',
+    metronome_hint: 'Clique em cada nota. O primeiro tempo de cada ciclo sai mais forte.',
+    help_instrument: 'Escolha o instrumento no topo. Cada um tem sua afinação, número de cordas e trastes.',
+  },
+  en: {
+    lbl_auto_bpm: 'Auto speed',
+    lbl_auto_every: 'every',
+    lbl_volume: 'Volume',
+    lbl_theme: 'Theme',
+    lbl_language: 'Language',
+    lbl_settings: 'Settings',
+    btn_help: 'Help',
+    btn_close: 'Close',
+    btn_start: 'Start',
+    btn_cancel: 'Cancel',
+    btn_continue: 'Keep practicing',
+    btn_clear: 'Clear',
+    lbl_challenge_hint: 'Play the scale and the app checks each note with the microphone.',
+    mic_title: 'Challenge mode',
+    mic_tip_web: 'Use headphones so the scale sound does not interfere with the microphone.',
+    mic_tip_no_headset: 'No headphones! The scale sound will be muted so it does not interfere with the microphone.',
+    mic_tip_headset: 'Headphones detected. You will hear the scale without interfering with the microphone.',
+    mic_calibrating: 'Calibrating the microphone… stay quiet.',
+    mic_unavailable: 'Microphone unavailable. Check the browser permission.',
+    hit_label: 'PERFECT!',
+    miss_label: 'MISSED',
+    score_summary: 'Round summary',
+    score_accuracy: 'Accuracy',
+    score_hits: 'Hits',
+    score_misses: 'Misses',
+    score_retry: 'Try again',
+    score_good: 'Good job',
+    score_great: 'Excellent',
+    score_amazing: 'Amazing',
+    trends_title: 'Trends',
+    trend_time: 'Practiced',
+    trend_favorite: 'Favorite',
+    trend_focus: 'Focus suggestion',
+    trend_focus_weak: 'High error rate. Pay more attention to: {notes}',
+    trend_focus_ok: 'Your accuracy could improve here compared to your other scales.',
+    confirm_clear: 'Erase all practice history?',
+    history_reset: 'History reset',
+    note_at: 'String {s} · Fret {f}',
+    free_scale: 'Free scale',
+    fingering_hint: 'Suggested finger',
+    empty_positions: 'No notes of this scale in the window.',
+    inst_guitarra: 'Electric guitar',
+    inst_violao: 'Acoustic guitar',
+    inst_baixo: 'Bass',
+    inst_ukulele: 'Ukulele',
+    inst_cavaco: 'Cavaquinho',
+    lbl_instrument: 'Instrument',
+    lbl_full_scale: 'Full scale',
+    lbl_positions: 'Positions',
+    lbl_practice: 'Practice',
+    skin_madeira: 'Wood',
+    lbl_metronome: 'Metronome',
+    lbl_show_ghost: 'Show other scale notes',
+    metro_title: 'Metronome',
+    metro_tap: 'Tap',
+    metro_tap_hint: 'Tap the rhythm to set the tempo',
+    metro_meter: 'Time signature',
+    metro_sub: 'Subdivision',
+    metro_sub_1: 'Beat only',
+    metro_sub_2: 'Binary · eighths',
+    metro_sub_3: 'Ternary · triplets',
+    metro_sub_4: 'Quaternary · sixteenths',
+    metro_sub_5: 'Quintuplets',
+    metro_sub_6: 'Sextuplets',
+    metro_accent: 'Accent on beat one',
+    metro_ramp: 'Practice ramp (gradual speed up)',
+    metro_ramp_step: 'Step',
+    metro_ramp_every: 'every',
+    metro_ramp_target: 'until',
+    metro_bars: 'bars',
+    metro_ticks: 'ticks per bar',
+    cycle_label: 'Cycle',
+    lbl_debug: 'Debug (console log)',
+    chal_active: 'Challenge on: play each note on the right beat and pitch.',
+    tools_title: 'Tools',
+    neck_prev: 'Previous position',
+    neck_next: 'Next position',
+    neck_follow: 'Follow playback (scrolls the neck)',
+    chal_error: 'Microphone unavailable: the challenge cannot score. Allow the microphone in the browser.',
+    chal_no_headset: 'Use headphones: without them, the app sound may be picked up by the microphone and count as a hit.',
+    chal_criterion: 'Hit: the note sounds with a fresh attack, within 60 cents of the pitch, within 450 ms (or 90% of the note).',
+    debug_hint: 'Logs each note: position, note, string, fret and frequency.',
+    notes_per_cycle: '{n} notes per cycle',
+    metro_silent: 'Silent bar',
+    metro_silent_off: 'Off',
+    metro_silent_every: 'one every {n} bars',
+    metro_start: 'Start',
+    metro_stop: 'Stop',
+    metro_explain: 'With a silent bar you play without the click and keep time on your own.',
+    lbl_string_count: 'Number of strings',
+    lbl_string_group: 'String group',
+    tuner_title: 'Tuner',
+    tuner_listen: 'Pluck a string',
+    tuner_in_tune: 'In tune',
+    tuner_low: 'Too low: tighten the string',
+    tuner_high: 'Too high: loosen the string',
+    tuner_cents: 'cents',
+    tuner_strings: 'Strings',
+    tuner_ref: 'A4 reference',
+    tuner_start: 'Enable microphone',
+    tuner_stop: 'Stop',
+    tuner_hint: 'Use a quiet room and pluck one string at a time. Tap a string in the list to lock the target.',
+    ghost_hint: 'Keeps the scale visible, with less emphasis than the exercise.',
+    metronome_hint: 'A click on each note. The first beat of each cycle is stronger.',
+    help_instrument: 'Pick the instrument at the top. Each one has its own tuning, string count and frets.',
+  },
+};
+
+const DICTS: Record<string, Dict> = {
+  pt: { ...pt, ...EXTRA.pt },
+  en: { ...en, ...EXTRA.en },
+  de,
+  es,
+  fr,
+  ru,
+  zh,
+  hi,
+  ar,
+  bn,
+  ur,
+} as Record<string, Dict>;
+
+export interface LangMeta {
+  code: string;
+  name: string;
+  flag: string;
+}
+
+export const LANGS: LangMeta[] = [
+  { code: 'pt', name: 'Português', flag: '🇧🇷' },
+  { code: 'en', name: 'English', flag: '🇺🇸' },
+  { code: 'es', name: 'Español', flag: '🇪🇸' },
+  { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+  { code: 'fr', name: 'Français', flag: '🇫🇷' },
+  { code: 'ru', name: 'Русский', flag: '🇷🇺' },
+  { code: 'zh', name: '中文', flag: '🇨🇳' },
+  { code: 'hi', name: 'हिन्दी', flag: '🇮🇳' },
+  { code: 'bn', name: 'বাংলা', flag: '🇧🇩' },
+  { code: 'ur', name: 'اردو', flag: '🇵🇰' },
+  { code: 'ar', name: 'العربية', flag: '🇸🇦' },
+];
+
+export const RTL_LANGS = new Set(['ar', 'ur']);
+
+/** Texto traduzido, com cadeia de fallback: idioma → inglês → português → chave. */
+export function translate(lang: string, key: string, vars?: Record<string, string | number>): string {
+  const pick = (d: Dict | undefined) => {
+    const v = d?.[key];
+    return typeof v === 'string' ? v : undefined;
+  };
+  let text = pick(DICTS[lang]) ?? pick(DICTS.en) ?? pick(DICTS.pt) ?? key;
+  if (vars) {
+    for (const [k, v] of Object.entries(vars)) text = text.replace(`{${k}}`, String(v));
+  }
+  return text;
+}
+
+export function rootNames(lang: string): string[] {
+  const list = DICTS[lang]?.roots ?? DICTS.en.roots;
+  return Array.isArray(list) ? list : [];
+}
+
+/**
+ * Separa o número do nome do exercício: "3. Grupos de 3 (…)" -> { num: '3', name: 'Grupos de 3' }.
+ * Assim o número aparece uma única vez na tela.
+ */
+export function exerciseParts(full: string): { num: string; name: string } {
+  const m = full.match(/^(\d+)\.\s*(.*)$/);
+  return m ? { num: m[1], name: shortExercise(m[2]) } : { num: '', name: shortExercise(full) };
+}
+
+/** Versão curta do nome do exercício, para o seletor compacto. */
+export function shortExercise(full: string): string {
+  let short = full.split(' (')[0];
+  const removals = [' a escala toda', ' the whole scale', ' toda la escala', ' toute la gamme', ' по всей гамме', ' cada nota', ' each note', ' chaque note', ' каждую ноту'];
+  for (const r of removals) short = short.replace(new RegExp(r, 'gi'), '');
+  return short.trim();
+}

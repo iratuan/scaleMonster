@@ -1,0 +1,157 @@
+/*
+ * Tokens de design. Tudo que é cor, raio, espaço e tipografia vive aqui.
+ * Os temas trocam só as cores; a escala de espaço e de tipo é a mesma em todos.
+ */
+
+:root {
+  /* Espaço (grade de 4px) */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-8: 32px;
+
+  /* Raio */
+  --r-sm: 12px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-xl: 28px;
+  --r-pill: 999px;
+
+  /* Tipo */
+  --fs-xs: 12px;
+  --fs-sm: 14px;
+  --fs-md: 16px;
+  --fs-lg: 20px;
+  --fs-xl: 32px;
+  --fs-hero: 40px;
+
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur: 180ms;
+}
+
+/* Dark (padrão, como a referência) */
+:root,
+[data-skin='dark'] {
+  color-scheme: dark;
+  --bg: #0a0a0c;
+  --surface: #131317;
+  --surface-2: #1b1b21;
+  --surface-3: #25252c;
+  --text: #f5f5f7;
+  --muted: #8e8e96;
+  --faint: #808089;
+  --line: rgba(255, 255, 255, 0.07);
+  --board: #101014;
+  --fret: rgba(255, 255, 255, 0.2);
+  --fret-strong: rgba(255, 255, 255, 0.55);
+  --string: #a3a9b6;
+  --nut: #d6d7dc;
+  --inlay: rgba(255, 255, 255, 0.16);
+  --note-on: #f5f5f7;
+  --note-on-ink: #0a0a0c;
+  --note-off: #24242b;
+  --note-off-ink: #8a8a94;
+  --accent: #3ddc97;
+  --accent-ink: #03140d;
+  --accent-soft: rgba(61, 220, 151, 0.2);
+  --good: #3ddc97;
+  --bad: #ff6b6b;
+  --dock: rgba(19, 19, 23, 0.78);
+  --scrim: rgba(0, 0, 0, 0.5);
+  --shadow: none;
+}
+
+[data-skin='light'] {
+  color-scheme: light;
+  --bg: #f2f2f6;
+  --surface: #ffffff;
+  --surface-2: #ececf1;
+  --surface-3: #e0e0e7;
+  --text: #1c1c21;
+  --muted: #74747e;
+  --faint: #6f6f7a;
+  --line: rgba(0, 0, 0, 0.06);
+  --board: #fbfbfd;
+  --fret: rgba(0, 0, 0, 0.16);
+  --fret-strong: rgba(0, 0, 0, 0.5);
+  --string: #7d8190;
+  --nut: #4a4a53;
+  --inlay: rgba(0, 0, 0, 0.14);
+  --note-on: #1c1c21;
+  --note-on-ink: #ffffff;
+  --note-off: #e6e6ec;
+  --note-off-ink: #8a8a95;
+  --accent: #0e9f6e;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(14, 159, 110, 0.18);
+  --good: #0e9f6e;
+  --bad: #d92d20;
+  --dock: rgba(255, 255, 255, 0.82);
+  --scrim: rgba(20, 20, 30, 0.3);
+  --shadow: none;
+}
+
+/* Vintage: madeira e tons quentes */
+[data-skin='vintage'] {
+  color-scheme: dark;
+  --bg: #241a12;
+  --surface: #30231a;
+  --surface-2: #3b2c20;
+  --surface-3: #4a3827;
+  --text: #f3e6cc;
+  --muted: #b29a74;
+  --faint: #7d6a50;
+  --line: rgba(243, 230, 204, 0.08);
+  --board: #2c2016;
+  --fret: rgba(243, 230, 204, 0.13);
+  --fret-strong: rgba(243, 230, 204, 0.45);
+  --string: #8c7452;
+  --nut: #e4d0a6;
+  --inlay: rgba(243, 230, 204, 0.2);
+  --note-on: #f3e6cc;
+  --note-on-ink: #241a12;
+  --note-off: #43331f;
+  --note-off-ink: #a08862;
+  --accent: #e3a84f;
+  --accent-ink: #241a12;
+  --accent-soft: rgba(227, 168, 79, 0.22);
+  --good: #a6d189;
+  --bad: #e58b6f;
+  --dock: rgba(48, 35, 26, 0.86);
+  --scrim: rgba(12, 8, 4, 0.55);
+  --shadow: none;
+}
+
+/* Madeira: braço de jacarandá, trastes e marcadores de osso, cordas de níquel */
+[data-skin='madeira'] {
+  color-scheme: dark;
+  --bg: #17110b;
+  --surface: #211810;
+  --surface-2: #2b2016;
+  --surface-3: #372a1d;
+  --text: #f2e8d5;
+  --muted: #b3a185;
+  --faint: #9c8c72;
+  --line: rgba(242, 232, 213, 0.08);
+  --board: #2a1c12;
+  --fret: rgba(240, 226, 196, 0.6);
+  --fret-strong: #efe3c6;
+  --string: #d9dce2;
+  --nut: #f4ead2;
+  --inlay: #efe3c6;
+  --note-on: #f2e8d5;
+  --note-on-ink: #2a1c12;
+  --note-off: #3a2b1e;
+  --note-off-ink: #9c8a6c;
+  --accent: #e3a84f;
+  --accent-ink: #2a1c12;
+  --accent-soft: rgba(227, 168, 79, 0.28);
+  --good: #a6d189;
+  --bad: #e58b6f;
+  --dock: rgba(33, 24, 16, 0.92);
+  --scrim: rgba(12, 8, 4, 0.6);
+  --shadow: none;
+}
