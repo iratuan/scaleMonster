@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { LogoIcon } from './Icons';
+import logoUrl from '../../assets/scalemonster-logo.png';
 
 interface SplashProps {
   title: string;
@@ -28,9 +28,9 @@ export function Splash({ title, minMs = 900 }: SplashProps) {
   return (
     <div className={`splash splash--${phase}`} role="status" aria-live="polite" aria-label={title}>
       <div className="splash__mark">
-        <LogoIcon width={56} height={56} />
+        <img src={logoUrl} alt="" className="splash__logo" />
       </div>
-      <p className="splash__title">{title}</p>
+      <p className="sr-only">{title}</p>
       <div className="splash__bar" aria-hidden>
         <span />
       </div>

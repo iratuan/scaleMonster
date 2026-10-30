@@ -15,7 +15,14 @@ Não é preciso Xcode para gerar o app de desktop.
 
 ## Passo a passo
 
-1. **Copie o projeto para o Mac.** Pode ser a pasta `guitarra-escalas-v3` inteira, sem `node_modules`.
+1. **Traga o projeto para o Mac.** Copie o arquivo `release/guitarra-escalas-1.3.0.bundle` (ele contém o histórico git completo) e rode:
+
+   ```bash
+   git clone guitarra-escalas-1.3.0.bundle guitarra-escalas-v3
+   cd guitarra-escalas-v3
+   ```
+
+   Alternativa: copiar a pasta do projeto inteira, sem `node_modules`.
 
 2. **Abra o Terminal na pasta do projeto** e instale as dependências:
 
@@ -40,8 +47,8 @@ Não é preciso Xcode para gerar o app de desktop.
 
    O resultado vai para a pasta `release/`:
 
-   - `Tutor-de-Escalas-1.0.0-mac-x64.dmg` (Macs Intel)
-   - `Tutor-de-Escalas-1.0.0-mac-x64.zip`
+   - `ScaleMonster-1.3.0-mac-x64.dmg` (Macs Intel)
+   - `ScaleMonster-1.3.0-mac-x64.zip`
    - Para Macs Apple Silicon (M1, M2, M3...), o electron-builder gera a versão `arm64`
      quando você roda em um Mac com esse processador. Para gerar as duas arquiteturas de uma vez:
 
@@ -60,7 +67,7 @@ Para abrir mesmo assim:
 
 - Clique com o botão direito no app e escolha **Abrir**, e confirme; **ou**
 - Em Ajustes do Sistema > Privacidade e Segurança, role até o aviso do app e clique em **Abrir Mesmo Assim**; **ou**
-- No Terminal: `xattr -dr com.apple.quarantine "/Applications/Tutor de Escalas.app"`
+- No Terminal: `xattr -dr com.apple.quarantine "/Applications/ScaleMonster.app"`
 
 ## Para distribuir sem avisos (opcional, depois)
 

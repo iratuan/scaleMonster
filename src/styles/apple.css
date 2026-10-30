@@ -50,9 +50,26 @@ h3 {
   font-weight: 600;
 }
 
-.header__title img {
-  width: 26px;
-  height: 26px;
+/* Logomarca na tela de abertura: grande, centralizada, sem o nome repetido em texto. */
+.splash__mark {
+  width: auto;
+  height: auto;
+  background: none;
+  border-radius: 0;
+}
+
+.splash__logo {
+  display: block;
+  width: min(240px, 62vw);
+  height: auto;
+}
+
+/* Logomarca no cabeçalho: altura fixa, largura pela proporção da imagem. */
+.header__title img,
+.brand-logo {
+  display: block;
+  height: 48px;
+  width: auto;
 }
 
 /* Botões de ícone: pílulas de material, com alvo de toque de 44 pt no celular. */

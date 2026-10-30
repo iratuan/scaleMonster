@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Tutor de Escalas</string>
-    <string name="title_activity_main">Tutor de Escalas</string>
+    <string name="app_name">ScaleMonster</string>
+    <string name="title_activity_main">ScaleMonster</string>
     <string name="package_name">com.guitarra.escalas</string>
     <string name="custom_url_scheme">com.guitarra.escalas</string>
 </resources>

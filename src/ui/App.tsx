@@ -25,7 +25,8 @@ import { ToolsMenu } from './components/ToolsMenu';
 import { TunerModal } from './components/TunerModal';
 import { MetronomeModal } from './components/MetronomeModal';
 import { Modal } from './components/Modal';
-import { MenuIcon, GearIcon, HelpIcon, LogoIcon, PlayIcon, StopIcon } from './components/Icons';
+import { MenuIcon, GearIcon, HelpIcon, PlayIcon, StopIcon } from './components/Icons';
+import logoUrl from '../assets/scalemonster-logo.png';
 import { Combobox } from './components/Combobox';
 import { skinOptions } from './components/skinOptions';
 
@@ -133,8 +134,7 @@ export default function App() {
       <Splash title={t('title')} />
       <header className="header">
         <h1 className="header__title">
-          <LogoIcon width={20} height={20} />
-          {t('title')}
+          <img src={logoUrl} alt={t('title')} className="brand-logo" />
         </h1>
           <select
             className="instrumento-compacto"

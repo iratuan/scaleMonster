@@ -18,8 +18,8 @@ html.paisagem-celular .app .header__title {
 }
 
 html.paisagem-celular .app .header__title img {
-  width: 22px;
-  height: 22px;
+  height: 36px;
+  width: auto;
 }
 
 html.paisagem-celular .app .header__actions {
