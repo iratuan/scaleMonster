@@ -1,13 +1,13 @@
-# Distribuição web (1.3.0)
+# Distribuição web (1.4.0)
 
-O pacote `release/tutor-escalas-web-1.3.0.zip` contém o site pronto (pasta `dist`). Não há servidor
+O pacote `release/ScaleMonster-web-1.4.0.zip` contém o site pronto (pasta `dist`). Não há servidor
 Node ou PHP: é só um conjunto de arquivos estáticos.
 
 ## Conteúdo
 
 - `index.html`, `assets/` (JavaScript e CSS)
 - `manifest.webmanifest` e `sw.js` (instalação como app e uso offline)
-- `icon.svg` e `logo-mascote.svg`
+- `icon-192.png` e `icon-512.png` (ícones do app, com a logomarca ScaleMonster)
 
 ## Como publicar
 
@@ -31,7 +31,7 @@ e abra `http://localhost:8080`.
 ## Atualizações
 
 O service worker guarda o app para uso offline. Ao publicar uma nova versão, o cache muda de nome
-(`tutor-escalas-v12` nesta versão) e o navegador baixa a versão nova na próxima visita. Se algum usuário ainda vir a
+(`tutor-escalas-v13` nesta versão) e o navegador baixa a versão nova na próxima visita. Se algum usuário ainda vir a
 versão antiga, peça para recarregar a página com Ctrl+F5 (ou Cmd+Shift+R no Mac).
 
 ## Publicação no GitHub Pages (quando você decidir)

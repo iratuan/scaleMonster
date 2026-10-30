@@ -1,12 +1,12 @@
-# Tutor de Escalas
+# ScaleMonster
 
 > Aprenda escalas no braço do seu instrumento, com um mascote que não tem medo de errar o tom.
 
-O **Tutor de Escalas** mostra as escalas no braço, toca cada nota, percorre as cinco posições
+O **ScaleMonster** mostra as escalas no braço, toca cada nota, percorre as cinco posições
 e confere se você tocou certo pelo microfone. Funciona no navegador, no Windows, no Android
 e (a gerar) no macOS.
 
-**Versão 1.3.0.** Idiomas iniciais: português, inglês e alemão.
+**Versão 1.4.0.** Idiomas iniciais: português, inglês e alemão.
 
 ---
 
@@ -106,9 +106,9 @@ Para o APK: `npx cap sync android` e depois `cd android && ./gradlew assembleDeb
 
 | Plataforma | Como obter | Documentação |
 | --- | --- | --- |
-| Web | `release/tutor-escalas-web-1.3.0.zip` (site estático) | [`docs/distribuicao-web.md`](docs/distribuicao-web.md) |
-| Windows | `release/Tutor de Escalas Setup 1.3.0.exe` (instalador com seletor de idioma) ou `Tutor de Escalas 1.3.0.exe` (portátil) | `npm run electron:build` |
-| Android | `release/Tutor-de-Escalas-1.3.0-android.apk` (depuração) | seção "Como rodar" acima |
+| Web | `release/ScaleMonster-web-1.4.0.zip` (site estático) | [`docs/distribuicao-web.md`](docs/distribuicao-web.md) |
+| Windows | `release/ScaleMonster Setup 1.4.0.exe` (instalador com seletor de idioma) ou `ScaleMonster 1.4.0.exe` (portátil) | `npm run electron:build` |
+| Android | `release/ScaleMonster-1.4.0-android.apk` (depuração) | seção "Como rodar" acima |
 | macOS | a gerar num Mac | [`docs/build-macos.md`](docs/build-macos.md) |
 
 Os instaladores ainda não estão assinados. No Windows, o SmartScreen pode avisar sobre o editor.
