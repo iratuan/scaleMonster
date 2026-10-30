@@ -88,10 +88,6 @@ export const MicIcon = (p: P) => (
   </svg>
 );
 
-/** Mascote da marca (SVG vetorial em public/logo-mascote.svg). */
-export const LogoIcon = (p: P) => (
-  <img src="logo-mascote.svg" alt="" aria-hidden="true" width={p.width} height={p.height} className={p.className} draggable={false} />
-);
 
 export const ChevronIcon = (p: P) => (
   <svg {...base(p)}>

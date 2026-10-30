@@ -22,4 +22,9 @@ describe('curiosidades do rodapé', () => {
   it('todas as curiosidades têm texto não vazio', () => {
     for (const list of Object.values(CURIOSIDADES)) for (const f of list) expect(f.trim().length).toBeGreaterThan(20);
   });
+
+  it('cada idioma tem pelo menos 30 curiosidades', () => {
+    expect(CURIOSIDADES.pt.length).toBeGreaterThanOrEqual(30);
+    expect(CURIOSIDADES.en.length).toBeGreaterThanOrEqual(30);
+  });
 });
