@@ -88,10 +88,9 @@ export const MicIcon = (p: P) => (
   </svg>
 );
 
+/** Mascote da marca (SVG vetorial em public/logo-mascote.svg). */
 export const LogoIcon = (p: P) => (
-  <svg {...base({ strokeWidth: 0, fill: 'currentColor', stroke: 'none', ...p })} viewBox="0 0 32 32">
-    <path d="M4 4h10v10h14v14H4z" />
-  </svg>
+  <img src="logo-mascote.svg" alt="" aria-hidden="true" width={p.width} height={p.height} className={p.className} draggable={false} />
 );
 
 export const ChevronIcon = (p: P) => (
@@ -118,5 +117,12 @@ export const MetronomeIcon = (p: P) => (
 export const ToolsIcon = (p: P) => (
   <svg {...base(p)}>
     <path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z" />
+  </svg>
+);
+
+/** Três linhas: abre o menu de escolhas (botão flutuante na paisagem). */
+export const MenuIcon = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M4 7h16M4 12h16M4 17h16" />
   </svg>
 );

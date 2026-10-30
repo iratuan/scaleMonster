@@ -6,8 +6,7 @@ import { Sequencer } from '../audio/sequencer';
 import { clampBpm, nextLoopState } from '../core/autoBpm';
 import { hitWindowMs } from '../core/judge';
 import { analyze, recordSession, type Analysis } from '../core/stats';
-import { nextWindowIndex } from '../core/hints';
-import type { DiagramData, FretWindow, PlayNote } from '../core/types';
+import type { PlayNote } from '../core/types';
 import { useSettings } from '../state/store';
 import { loadStats, saveStats } from '../state/statsStorage';
 import { scoreTitle } from './scoreText';
@@ -48,6 +47,7 @@ const emptyCounters = (): Counters => ({ hits: 0, misses: 0, total: 0, missed: [
 /** Nome do diagrama como aparece na tela: 'pos-1' vira 'posição 2' (ids começam em zero). */
 export function diagramName(id: string): string {
   if (id === 'main') return 'escala completa';
+  if (id === 'chord') return 'acorde';
   const n = Number(id.split('-')[1]);
   return Number.isFinite(n) ? `posição ${n + 1}` : id;
 }
@@ -56,11 +56,10 @@ export function diagramName(id: string): string {
 const noteKey = (n: PlayNote) => `${n.string}-${n.fret}`;
 
 /** Orquestra reprodução, contagem regressiva, microfone (desafio) e pontuação. */
-export function usePlayback(positions: DiagramData[], scaleName: string) {
+export function usePlayback(scaleName: string) {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [playingKey, setPlayingKey] = useState<string | null>(null);
   const [countdown, setCountdown] = useState<number | null>(null);
-  const [posIndex, setPosIndex] = useState(0);
   /** Índice da nota dentro da sequência atual (para respeitar a unidade do exercício). */
   const [step, setStep] = useState(0);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
@@ -79,8 +78,6 @@ export function usePlayback(positions: DiagramData[], scaleName: string) {
   const sessionStart = useRef<number | null>(null);
   const counters = useRef<Counters>(emptyCounters());
   const loopCount = useRef(0);
-  const posRef = useRef(0);
-  const windowsRef = useRef<FretWindow[]>([]);
   const activeRef = useRef<string | null>(null);
   const scaleNameRef = useRef(scaleName);
   scaleNameRef.current = scaleName;
@@ -120,10 +117,6 @@ export function usePlayback(positions: DiagramData[], scaleName: string) {
     if (audio.current.state === 'suspended') void audio.current.resume();
     return audio.current;
   };
-
-  useEffect(() => {
-    windowsRef.current = positions.map((p) => [p.start, p.end] as FretWindow);
-  }, [positions]);
 
   /** Encerra a reprodução. Com `withScore`, mostra o resumo do desafio se houve notas. */
   const stop = useCallback((withScore: boolean) => {
@@ -177,14 +170,6 @@ export function usePlayback(positions: DiagramData[], scaleName: string) {
     setStep(index);
     setCycleEnd(index === seq.length - 1);
 
-    if (diagramId === 'main' && windowsRef.current.length > 0) {
-      const next = nextWindowIndex(posRef.current, note.fret, windowsRef.current);
-      if (next !== posRef.current) {
-        posRef.current = next;
-        setPosIndex(next);
-      }
-    }
-
     const s = useSettings.getState();
     const headsetMissing = s.challenge && detectHeadset() === false;
     const ac = getAudio();
@@ -223,8 +208,6 @@ export function usePlayback(positions: DiagramData[], scaleName: string) {
       setActiveId(diagramId);
       counters.current = emptyCounters();
       loopCount.current = 0;
-      posRef.current = 0;
-      setPosIndex(0);
       setCycle(1);
       setStep(0);
       setCycleEnd(false);
@@ -289,7 +272,6 @@ export function usePlayback(positions: DiagramData[], scaleName: string) {
     cycle,
     cycleEnd,
     countdown,
-    posIndex,
     feedback,
     score,
     closeScore: () => setScore(null),

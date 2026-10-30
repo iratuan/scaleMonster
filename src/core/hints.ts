@@ -1,5 +1,5 @@
 import { fingerFor } from './fingering';
-import type { DiagramData, FretWindow } from './types';
+import type { DiagramData } from './types';
 
 /**
  * Na escala completa, cada nota pode ter dedo diferente em cada posição CAGED.
@@ -27,17 +27,4 @@ export function displayFinger(
   if (byPos.has(currentPos)) return byPos.get(currentPos) ?? '';
   const first = Math.min(...byPos.keys());
   return byPos.get(first) ?? '';
-}
-
-/**
- * Ao tocar uma nota fora da janela atual, troca para a próxima janela que a contém
- * (ou para a primeira que a contém). Mesma regra do observador legado.
- */
-export function nextWindowIndex(current: number, fret: number, windows: FretWindow[]): number {
-  const contains = (i: number) => fret >= windows[i][0] && fret <= windows[i][1];
-  const inCurrent = windows[current];
-  if (inCurrent && contains(current)) return current;
-  if (windows[current + 1] && contains(current + 1)) return current + 1;
-  const found = windows.findIndex((_, i) => contains(i));
-  return found >= 0 ? found : current;
 }

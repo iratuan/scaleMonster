@@ -1,0 +1,14 @@
+import puppeteer from 'puppeteer-core';
+const b = await puppeteer.launch({ executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe', headless: true, args: ['--no-sandbox'] });
+const p = await b.newPage();
+await p.setViewport({ width: 1280, height: 900, deviceScaleFactor: 1 });
+await p.goto('http://localhost:4173/', { waitUntil: 'networkidle0' });
+await p.evaluate(() => localStorage.setItem('tutor_escalas_v3_settings', JSON.stringify({ state: { lang: 'pt', skin: 'dark', instrument: 'guitarra', stringCount: 6, strings: 'all', root: 'C', category: 'Modos Gregos', mode: 'Jônio (Maior)', exercise: 1, bpm: 60, view: 'neck' }, version: 2 })));
+await p.reload({ waitUntil: 'networkidle0' });
+await p.waitForFunction(() => !document.querySelector('.splash'), { timeout: 15000 });
+await p.waitForSelector('.chord-panel', { timeout: 8000 });
+const chips = await p.$$eval('.chord-panel .chord-chip:not(.chord-chip--type)', (els) => els.map((e) => e.textContent));
+console.log('diatonicos:', chips.join(' '));
+const panel = await p.$('.chord-panel');
+await panel.screenshot({ path: 'E:/SANDBOX_CLAUDE/guitarra/guitarra-escalas-v3/docs/evidencias/telas/acordes-diatonicos-jonio.png' });
+await b.close();

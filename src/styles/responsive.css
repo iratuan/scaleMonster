@@ -345,19 +345,7 @@
   color: var(--faint);
 }
 
-/* ---------- Braço deslizante: 5 posições lado a lado, rolando ---------- */
-.neck {
-  min-width: 0;
-}
-
-.neck__head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--s-3);
-  margin-bottom: var(--s-3);
-}
-
+/* ---------- Títulos dos cartões de posição ---------- */
 .neck__title {
   margin: 2px 0 0;
   font-size: var(--fs-md);
@@ -374,84 +362,4 @@
   margin: 2px 0 0;
   font-size: var(--fs-xs);
   color: var(--muted);
-}
-
-.neck__viewport {
-  overflow: hidden;
-  border-radius: var(--r-lg);
-  background: var(--surface);
-  padding: var(--s-4) 0;
-  touch-action: pan-y;
-}
-
-.neck__track {
-  display: flex;
-  transition: transform 420ms var(--ease);
-}
-
-.neck__slide {
-  flex: 0 0 100%;
-  min-width: 0;
-  padding: 0 var(--s-4);
-}
-
-.neck__nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--s-4);
-  margin-top: var(--s-3);
-}
-
-.neck__arrow {
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--surface);
-  color: var(--text);
-}
-
-.neck__arrow:disabled {
-  opacity: 0.3;
-}
-
-.neck__dots {
-  display: flex;
-  gap: var(--s-2);
-}
-
-.neck__dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--surface-3);
-  transition: background-color var(--dur) var(--ease), transform var(--dur) var(--ease);
-}
-
-.neck__dot.is-on {
-  background: var(--text);
-  transform: scale(1.2);
-}
-
-.neck__follow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--s-3);
-  margin-top: var(--s-3);
-  font-size: var(--fs-sm);
-  color: var(--muted);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .neck__track {
-    transition: none;
-  }
-}
-
-/* Opção de acompanhar: interruptor e texto juntos, à esquerda. */
-.neck__follow {
-  justify-content: flex-start;
 }

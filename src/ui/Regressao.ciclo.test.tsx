@@ -19,7 +19,7 @@ describe('regressão: fim de ciclo na 12ª nota', () => {
     vi.useFakeTimers();
     useSettings.setState({ lang: 'pt', instrument: 'baixo', stringCount: 4, strings: '1-2', root: 'C', category: 'Pentatônica', mode: 'Maior', exercise: 4, bpm: 80 });
     const { container } = render(<App />);
-    const card = container.querySelector('.neck') as HTMLElement;
+    const card = container.querySelector('.pos-card') as HTMLElement;
     const play = card.querySelector('.play') as HTMLButtonElement;
 
     act(() => {

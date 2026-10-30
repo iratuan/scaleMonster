@@ -5,7 +5,7 @@ export type Skin = 'light' | 'dark' | 'vintage' | 'madeira';
 /** Identificador do filtro de cordas do instrumento atual (ex.: 'all', '1-3'). */
 export type StringFilter = string;
 
-export type ExerciseId = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+export type ExerciseId = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15;
 
 export interface ModeDef {
   /** Intervalos em semitons a partir da tônica. */

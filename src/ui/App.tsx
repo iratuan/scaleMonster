@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { buildFretboard } from '../core/positions';
+import { buildFretboard, positionAt } from '../core/positions';
+import { clefShift, resolveClef, staffKey } from '../core/notation';
+import { Staff } from './components/Staff';
 import { getScaleContext, NOTES } from '../core/notes';
 import { fingerFor } from '../core/fingering';
-import { exerciseUnit } from '../core/exercise';
 import { displayFinger, mainFingerMap } from '../core/hints';
 import { RTL_LANGS, exerciseParts, rootNames, translate } from '../core/i18n';
 import { INSTRUMENT_LIST, resolveInstrument, type InstrumentId } from '../core/instruments';
@@ -11,7 +12,9 @@ import { useSettings } from '../state/store';
 import { clearStats } from '../state/statsStorage';
 import { diagramName, usePlayback } from './usePlayback';
 import { Fretboard } from './components/Fretboard';
-import { NeckCarousel } from './components/NeckCarousel';
+import { PositionGrid } from './components/PositionGrid';
+import { Footer } from './components/Footer';
+import { SpaceBackdrop } from './components/SpaceBackdrop';
 import { SettingsSheet } from './components/SettingsSheet';
 import { Toolbar } from './components/Toolbar';
 import { ChallengeBar } from './components/ChallengeBar';
@@ -21,7 +24,8 @@ import { Splash } from './components/Splash';
 import { ToolsMenu } from './components/ToolsMenu';
 import { TunerModal } from './components/TunerModal';
 import { MetronomeModal } from './components/MetronomeModal';
-import { GearIcon, HelpIcon, LogoIcon, MoonIcon, NoteIcon, PlayIcon, StopIcon, SunIcon } from './components/Icons';
+import { Modal } from './components/Modal';
+import { MenuIcon, GearIcon, HelpIcon, LogoIcon, MoonIcon, NoteIcon, PlayIcon, StopIcon, SunIcon } from './components/Icons';
 
 const SKIN_ORDER: Skin[] = ['dark', 'light', 'vintage', 'madeira'];
 
@@ -33,14 +37,13 @@ export default function App() {
   const spec = INSTRUMENT_LIST.find((i) => i.id === s.instrument) ?? INSTRUMENT_LIST[0];
   const ctx = useMemo(() => getScaleContext(s.root, s.category, s.mode, instrument), [s.root, s.category, s.mode, instrument]);
   const model = useMemo(() => (ctx ? buildFretboard(ctx, s.exercise, s.strings) : null), [ctx, s.exercise, s.strings]);
-  const pb = usePlayback(model?.positions ?? [], `${t(s.category)} ${t(s.mode)}`);
+  const pb = usePlayback(`${t(s.category)} ${t(s.mode)}`);
 
   const [sheet, setSheet] = useState(false);
+  const [escolhas, setEscolhas] = useState(false);
   const [help, setHelp] = useState(false);
   const [backing, setBacking] = useState(false);
   const [cleared, setCleared] = useState(false);
-  const [neckIndex, setNeckIndex] = useState(0);
-  const [follow, setFollow] = useState(false);
   const [tuner, setTuner] = useState(false);
   const [metronome, setMetronome] = useState(false);
   const toggleMain = useRef<() => void>(() => {});
@@ -61,15 +64,8 @@ export default function App() {
 
   // Acompanhar a execução: o braço rola para a posição que toca. Na escala completa, só troca de posição
   // no fim de um padrão do exercício (a unidade), para não cortar um grupo de notas.
-  useEffect(() => {
-    if (!follow || !pb.activeId) return;
-    if (pb.activeId === 'main') {
-      if (pb.step % exerciseUnit(s.exercise) === 0) setNeckIndex(pb.posIndex);
-    } else {
-      const k = Number(pb.activeId.split('-')[1]);
-      if (Number.isFinite(k)) setNeckIndex(k);
-    }
-  }, [follow, pb.activeId, pb.posIndex, pb.step, s.exercise]);
+  // Posição do ciclo que está tocando na escala completa (0 quando não toca).
+  const curPos = model && pb.activeId === 'main' ? positionAt(model.segments, pb.step) : 0;
 
   // Log de depuração do lado gráfico: a casa que está destacada na tela (lida do DOM).
   // Compare com a linha [exec] (lógica): se as duas coincidem, o erro não é de desenho.
@@ -80,6 +76,19 @@ export default function App() {
   }, [pb.playingKey, pb.activeId, s.debug]);
 
   const mainFingers = useMemo(() => (model ? mainFingerMap(model.positions) : new Map()), [model]);
+  // Partitura: a mesma sequência da escala completa, na clave escolhida (ou a padrão do instrumento).
+  const clefId = resolveClef(s.clef, s.instrument);
+  const staffKeys = useMemo(
+    () => (model ? model.main.sequence.map((n) => staffKey(n.absPitch, n.noteIdx, clefShift(clefId))) : []),
+    [model, clefId],
+  );
+  // Cada posição começa numa linha nova (a primeira já começa a partitura).
+  const staffBreaks = useMemo(() => model?.segments.slice(1).map((g) => g.cycle) ?? [], [model]);
+  const staffLabels = useMemo(() => {
+    const m = new Map<number, string>();
+    model?.segments.forEach((g) => m.set(g.cycle, `P${g.pos + 1}`));
+    return m;
+  }, [model]);
 
   toggleMain.current = () => {
     if (model) pb.toggle('main', model.main.sequence);
@@ -101,10 +110,15 @@ export default function App() {
   if (!ctx || !model) return null;
 
   const mainFingerOf = (str: number, fret: number) => {
-    const fromPos = displayFinger(mainFingers.get(`${str}-${fret}`), pb.posIndex);
+    const fromPos = displayFinger(mainFingers.get(`${str}-${fret}`), curPos);
     return fromPos !== '' ? fromPos : fingerFor(fret, str, model.main.activePairs);
   };
-  const mainKeys = new Set(model.main.activePairs.map((p) => `${p.string}-${p.fret}`));
+  // Ciclo atual da escala completa: marca só as notas que serão tocadas nele.
+  const curSeg = pb.activeId === 'main' ? model.segments.find((g) => pb.step >= g.start && pb.step < g.end) : undefined;
+  // Durante a execução nunca mostra o percurso inteiro: só o ciclo atual.
+  const mainKeys = new Set(
+    (pb.activeId === 'main' ? (curSeg ? model.main.sequence.slice(curSeg.start, curSeg.end) : []) : model.main.activePairs).map((p) => `${p.string}-${p.fret}`),
+  );
   const feedbackMain = pb.feedback && pb.feedback.diagramId === 'main' ? pb.feedback : null;
   const nextSkin = () => s.setSkin(SKIN_ORDER[(SKIN_ORDER.indexOf(s.skin) + 1) % SKIN_ORDER.length]);
   const SkinIcon = s.skin === 'light' ? SunIcon : s.skin === 'dark' ? MoonIcon : NoteIcon;
@@ -112,12 +126,26 @@ export default function App() {
 
   return (
     <div className="app" data-skin={s.skin} lang={s.lang}>
+      <SpaceBackdrop />
       <Splash title={t('title')} />
       <header className="header">
         <h1 className="header__title">
           <LogoIcon width={20} height={20} />
           {t('title')}
         </h1>
+          <select
+            className="instrumento-compacto"
+            aria-label={t('lbl_instrument')}
+            value={s.instrument}
+            onChange={(e) => s.setInstrument(e.target.value as InstrumentId)}
+          >
+            {INSTRUMENT_LIST.map((i) => (
+              <option key={i.id} value={i.id}>
+                {t(i.nameKey)}
+              </option>
+            ))}
+          </select>
+
         <div className="header__actions">
           <button type="button" className="icon-btn" onClick={nextSkin} aria-label={t('lbl_theme')} title={t('lbl_theme')}>
             <SkinIcon width={18} height={18} />
@@ -133,35 +161,46 @@ export default function App() {
       </header>
 
       <main className="page">
-        <div className="chips" role="radiogroup" aria-label={t('lbl_instrument')}>
-          {INSTRUMENT_LIST.map((i) => (
-            <button
-              key={i.id}
-              type="button"
-              role="radio"
-              aria-checked={s.instrument === i.id}
-              className="chip"
-              onClick={() => s.setInstrument(i.id as InstrumentId)}
-            >
-              {t(i.nameKey)}
-            </button>
-          ))}
+        <div className="instrumento-linha">
+          <div className="chips" role="radiogroup" aria-label={t('lbl_instrument')}>
+            {INSTRUMENT_LIST.map((i) => (
+              <button
+                key={i.id}
+                type="button"
+                role="radio"
+                aria-checked={s.instrument === i.id}
+                className="chip"
+                onClick={() => s.setInstrument(i.id as InstrumentId)}
+              >
+                {t(i.nameKey)}
+              </button>
+            ))}
+          </div>
+
+          {spec.variants.length > 1 && (
+            <div className="variants">
+              <span className="variants__label">{t('lbl_string_count')}</span>
+              <div className="seg" role="radiogroup" aria-label={t('lbl_string_count')}>
+                {spec.variants.map((n) => (
+                  <button key={n} type="button" role="radio" aria-checked={s.stringCount === n} onClick={() => s.setStringCount(n)}>
+                    {n}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
-        {spec.variants.length > 1 && (
-          <div className="variants">
-            <span className="variants__label">{t('lbl_string_count')}</span>
-            <div className="seg" role="radiogroup" aria-label={t('lbl_string_count')}>
-              {spec.variants.map((n) => (
-                <button key={n} type="button" role="radio" aria-checked={s.stringCount === n} onClick={() => s.setStringCount(n)}>
-                  {n}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
         <Toolbar lang={s.lang} t={t} />
+
+        <button type="button" className="fab-escolhas" onClick={() => setEscolhas(true)} aria-label={t('lbl_choices')} title={t('lbl_choices')}>
+          <MenuIcon width={20} height={20} />
+        </button>
+        {escolhas && (
+          <Modal title={t('lbl_choices')} onClose={() => setEscolhas(false)} closeLabel={t('btn_close')} variant="sheet">
+            <Toolbar lang={s.lang} t={t} />
+          </Modal>
+        )}
 
         {s.challenge && <ChallengeBar t={t} micStatus={pb.micStatus} />}
 
@@ -192,6 +231,18 @@ export default function App() {
             </button>
           </div>
           <div className="surface">
+            {s.view === 'staff' ? (
+              <Staff
+                keys={staffKeys}
+                clef={clefId}
+                breaks={staffBreaks}
+                labels={staffLabels}
+                from={curSeg?.start ?? 0}
+                to={curSeg?.end ?? 0}
+                active={pb.activeId === 'main' ? pb.step : null}
+                playing={pb.activeId === 'main'}
+              />
+            ) : (
             <Fretboard
               id="main"
               start={model.main.start}
@@ -207,21 +258,19 @@ export default function App() {
               feedback={feedbackMain ? { key: feedbackMain.key, kind: feedbackMain.kind, seq: feedbackMain.seq } : null}
               labels={{ hit: t('hit_label'), miss: t('miss_label') }}
             />
+            )}
             <p className="caption">
-              {t('position')} {pb.posIndex + 1} / {model.positions.length}
+              {t('position')} {curPos + 1} / {model.positions.length}
               {pb.activeId === 'main' && ` · ${t('cycle_label')} ${pb.cycle}`}
             </p>
           </div>
         </section>
 
-        <NeckCarousel
+        {s.view === 'neck' && (
+        <PositionGrid
           t={t}
           ctx={ctx}
           positions={model.positions}
-          index={neckIndex}
-          onIndex={setNeckIndex}
-          follow={follow}
-          onFollow={setFollow}
           activeId={pb.activeId}
           playingKey={pb.playingKey}
           nextKey={pb.nextKey}
@@ -232,7 +281,10 @@ export default function App() {
           showGhost={s.showGhost}
           onToggle={(d) => pb.toggle(d.id, d.sequence)}
         />
+        )}
       </main>
+
+      <Footer t={t} lang={s.lang} />
 
       {pb.countdown !== null && (
         <div className="overlay overlay--count" aria-live="assertive">

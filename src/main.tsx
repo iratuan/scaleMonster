@@ -7,6 +7,19 @@ import './styles/variants.css';
 import './styles/responsive.css';
 import './styles/tuner.css';
 import './styles/metronome.css';
+import './styles/madeira-braco.css';
+import './styles/posicoes.css';
+import './styles/apple.css';
+import './styles/celular-paisagem.css';
+
+// Celular na horizontal: uma classe na página (e não media query) ativa o layout compacto.
+function marcaPaisagemCelular() {
+  const compacto = window.innerWidth > window.innerHeight && window.innerHeight <= 500;
+  document.documentElement.classList.toggle('paisagem-celular', compacto);
+}
+marcaPaisagemCelular();
+window.addEventListener('resize', marcaPaisagemCelular);
+window.addEventListener('orientationchange', marcaPaisagemCelular);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

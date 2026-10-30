@@ -6,6 +6,7 @@ import { clampBpm } from '../core/autoBpm';
 import { LANGS } from '../core/i18n';
 import { DEFAULT_INSTRUMENT, INSTRUMENTS, resolveInstrument, type InstrumentId } from '../core/instruments';
 import type { ExerciseId, Skin, StringFilter } from '../core/types';
+import { CLEF_CHOICES, type ClefChoice } from '../core/notation';
 
 /** localStorage pode estar bloqueado (aba privada, cota, WebView); nunca deve quebrar o app. */
 const safeStorage: StateStorage = {
@@ -58,6 +59,10 @@ export interface Settings {
   autoBpm: boolean;
   autoCycles: number;
   fingering: boolean;
+  /** Como mostrar a escala completa: no braço ou em partitura. */
+  view: 'neck' | 'staff';
+  /** Clave da partitura: 'auto' segue o padrão do instrumento. */
+  clef: ClefChoice;
   inverted: boolean;
   challenge: boolean;
   metronome: boolean;
@@ -83,6 +88,8 @@ export interface SettingsActions {
   setAutoBpm: (on: boolean) => void;
   setAutoCycles: (cycles: number) => void;
   setFingering: (on: boolean) => void;
+  setView: (view: 'neck' | 'staff') => void;
+  setClef: (clef: ClefChoice) => void;
   setInverted: (on: boolean) => void;
   setChallenge: (on: boolean) => void;
   setMetronome: (on: boolean) => void;
@@ -114,6 +121,8 @@ export const useSettings = create<Settings & SettingsActions>()(
       autoBpm: false,
       autoCycles: 2,
       fingering: true,
+      view: 'neck',
+      clef: 'auto',
       inverted: false,
       challenge: false,
       metronome: false,
@@ -141,6 +150,8 @@ export const useSettings = create<Settings & SettingsActions>()(
       setAutoBpm: (autoBpm) => set({ autoBpm }),
       setAutoCycles: (autoCycles) => set({ autoCycles }),
       setFingering: (fingering) => set({ fingering }),
+      setView: (view) => set({ view }),
+      setClef: (clef) => set({ clef }),
       setInverted: (inverted) => set({ inverted }),
       setChallenge: (challenge) => set({ challenge }),
       setMetronome: (metronome) => set({ metronome }),
@@ -168,6 +179,8 @@ export const useSettings = create<Settings & SettingsActions>()(
         autoBpm: s.autoBpm,
         autoCycles: s.autoCycles,
         fingering: s.fingering,
+        view: s.view,
+        clef: s.clef,
         inverted: s.inverted,
         challenge: s.challenge,
         metronome: s.metronome,
@@ -186,6 +199,9 @@ export const useSettings = create<Settings & SettingsActions>()(
           ...current,
           ...p,
           instrument,
+          lang: p.lang && LANGS.some((l) => l.code === p.lang) ? p.lang : current.lang,
+          view: p.view === 'staff' ? 'staff' : 'neck',
+          clef: CLEF_CHOICES.includes(p.clef as ClefChoice) ? (p.clef as ClefChoice) : 'auto',
           category,
           mode,
           stringCount,

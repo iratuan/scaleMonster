@@ -6,8 +6,9 @@ import App from './App';
 describe('App', () => {
   it('monta o braço da escala completa e as 5 posições (violão padrão, 6 cordas)', () => {
     const { container } = render(<App />);
+    // Escala completa e 5 posições. O dicionário de acordes só monta o seu braço ao ser aberto.
     expect(container.querySelectorAll('.fb__board').length).toBe(6);
-    expect(container.querySelectorAll('.neck__slide').length).toBe(5);
+    expect(container.querySelectorAll('.pos-card').length).toBe(5);
     expect(container.querySelector('.fb__tuning')?.children.length).toBe(6);
     cleanup();
   });

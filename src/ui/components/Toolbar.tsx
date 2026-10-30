@@ -12,7 +12,7 @@ interface ToolbarProps {
   t: (key: string) => string;
 }
 
-const EXERCISES: ExerciseId[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const EXERCISES: ExerciseId[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
 /**
  * Painel de escolhas musicais no topo: tom, escala, variação, cordas, exercício e velocidade.

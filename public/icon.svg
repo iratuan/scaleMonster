@@ -1,4 +1,40 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <rect width="512" height="512" rx="112" fill="#0a0a0c"/>
-  <path transform="translate(96 96) scale(10)" fill="#3ddc97" d="M4 4h10v10h14v14H4z"/>
+  <g transform="translate(56 56) scale(2)">
+  <!-- Cabelo solto, balançando no headbang -->
+  <path d="M60 66 C38 92 30 136 42 176 L72 166 L72 82 Z" fill="#2a1a14"/>
+  <path d="M140 66 C162 92 170 136 158 176 L128 166 L128 82 Z" fill="#2a1a14"/>
+  <!-- Linhas de movimento -->
+  <path d="M26 46 L14 36 M22 66 L8 62 M174 46 L186 36 M178 66 L192 62" stroke="#3ddc97" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <!-- Corpo: barrigudinho com camiseta escura e listra verde -->
+  <path d="M22 200 C18 146 44 118 100 116 C156 118 182 146 178 200 Z" fill="#1c1c22"/>
+  <path d="M70 200 L76 142 M130 200 L124 142" stroke="#3ddc97" stroke-width="5" stroke-linecap="round"/>
+  <!-- Pescoço e cabeça -->
+  <rect x="90" y="106" width="20" height="18" rx="6" fill="#f2c09a"/>
+  <path d="M60 64 C58 30 80 20 100 20 C122 20 142 30 140 64 C128 50 72 50 60 64 Z" fill="#2a1a14"/>
+  <ellipse cx="100" cy="74" rx="44" ry="42" fill="#f2c09a"/>
+  <!-- Óculos -->
+  <circle cx="84" cy="72" r="12" fill="#ffffff" fill-opacity="0.25" stroke="#111114" stroke-width="3"/>
+  <circle cx="116" cy="72" r="12" fill="#ffffff" fill-opacity="0.25" stroke="#111114" stroke-width="3"/>
+  <path d="M96 72 L104 72" stroke="#111114" stroke-width="3"/>
+  <path d="M72 58 Q84 52 96 58 M104 58 Q116 52 128 58" stroke="#2a1a14" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <circle cx="84" cy="74" r="2.6" fill="#111114"/>
+  <circle cx="116" cy="74" r="2.6" fill="#111114"/>
+  <!-- Bochechas e boca aberta gritando -->
+  <circle cx="62" cy="96" r="8" fill="#e0716a" fill-opacity="0.45"/>
+  <circle cx="138" cy="96" r="8" fill="#e0716a" fill-opacity="0.45"/>
+  <ellipse cx="100" cy="98" rx="10" ry="8" fill="#5a1a1a"/>
+  <ellipse cx="100" cy="103" rx="6" ry="3" fill="#e0716a"/>
+  <!-- Guitarra: corpo em forma de 8, braço e cabeça -->
+  <line x1="126" y1="160" x2="178" y2="110" stroke="#3b2416" stroke-width="9" stroke-linecap="round"/>
+  <rect x="172" y="92" width="14" height="18" rx="4" transform="rotate(-45 179 101)" fill="#3b2416"/>
+  <circle cx="116" cy="168" r="28" fill="#c0392b"/>
+  <circle cx="90" cy="188" r="24" fill="#c0392b"/>
+  <circle cx="106" cy="170" r="7" fill="#1a0d08"/>
+  <!-- Braço da mão esquerda (casas) e braço da palheta -->
+  <path d="M42 150 Q96 138 150 124" stroke="#1c1c22" stroke-width="24" stroke-linecap="round" fill="none"/>
+  <circle cx="150" cy="124" r="11" fill="#f2c09a"/>
+  <path d="M158 160 Q170 176 130 184" stroke="#1c1c22" stroke-width="24" stroke-linecap="round" fill="none"/>
+  <circle cx="126" cy="184" r="11" fill="#f2c09a"/>
+  </g>
 </svg>

@@ -49,6 +49,39 @@ export function candidateNotes(
 
 const upAndDown = (b: PlayNote[]): PlayNote[] => [...b, ...[...b].reverse().slice(1)];
 
+/** Pares de notas separadas por `step` graus da escala: step 2 = terças, 3 = quartas, 4 = quintas. */
+const leaps = (list: PlayNote[], step: number): PlayNote[] => {
+  const out: PlayNote[] = [];
+  for (let i = 0; i + step < list.length; i++) out.push(list[i], list[i + step]);
+  return out;
+};
+
+/** Grupos de vai e volta: nota, vizinha de cima, nota de novo (1-2-1, 2-3-2...). */
+const turns = (list: PlayNote[]): PlayNote[] => {
+  const out: PlayNote[] = [];
+  for (let i = 0; i + 1 < list.length; i++) out.push(list[i], list[i + 1], list[i]);
+  return out;
+};
+
+/** Varredura corda a corda, da mais grave para a mais aguda; em cada corda, do traste mais baixo ao mais alto. */
+const byString = (list: PlayNote[], stringCount: number): PlayNote[] => {
+  const out: PlayNote[] = [];
+  for (let s = stringCount - 1; s >= 0; s--) {
+    out.push(...list.filter((n) => n.string === s).sort((a, b) => a.fret - b.fret));
+  }
+  return out;
+};
+
+/** Cada nota com a que está uma oitava acima (dir = 1) ou abaixo (dir = -1), quando a janela alcança. */
+const octaves = (list: PlayNote[], dir: 1 | -1): PlayNote[] => {
+  const out: PlayNote[] = [];
+  for (const n of list) {
+    const partner = list.find((m) => m.absPitch === n.absPitch + 12 * dir);
+    if (partner) out.push(n, partner);
+  }
+  return out;
+};
+
 /** Janelas deslizantes de tamanho k, sobre a lista subindo e descendo. */
 function slide(list: PlayNote[], k: number): PlayNote[] {
   const out: PlayNote[] = [];
@@ -87,6 +120,29 @@ export function buildSequence(base: PlayNote[], exercise: ExerciseId, rootIdx: n
       break;
     case 8:
       seq = upAndDown(base.filter((n) => inRoot(n, [0, 3, 4, 6, 7, 8, 9, 10, 11])));
+      break;
+    case 10:
+      seq = [...turns(base), ...turns(rev)];
+      break;
+    case 11:
+      seq = [...leaps(base, 3), ...leaps(rev, 3)];
+      break;
+    case 12:
+      seq = [...leaps(base, 4), ...leaps(rev, 4)];
+      break;
+    case 13: {
+      // Três notas por corda: sobe corda a corda e volta pelo mesmo caminho.
+      const sweep = byString(base, stringCount);
+      seq = [...sweep, ...[...sweep].reverse()];
+      break;
+    }
+    case 14:
+      // Ordem de dedos 1-3-2-4 em grupos de quatro notas, subindo e descendo.
+      for (let i = 0; i + 3 < base.length; i++) seq.push(base[i], base[i + 2], base[i + 1], base[i + 3]);
+      for (let i = 0; i + 3 < rev.length; i++) seq.push(rev[i], rev[i + 2], rev[i + 1], rev[i + 3]);
+      break;
+    case 15:
+      seq = [...octaves(base, 1), ...octaves(rev, -1)];
       break;
     case 9: {
       // Saltos de corda (6-4, 5-3, 4-2...): desce em pares e volta. Para 6 cordas
@@ -138,15 +194,24 @@ export function generateDiagram(
  * troca de posição no fim de uma unidade, para não cortar um grupo no meio.
  *  - 1, 2, 3 (sobe e desce / repetições) e 7, 8 (acordes): cada nota é uma unidade.
  *  - 4 (grupos de 3), 5 (grupos de 4), 6 (saltos de terça) e 9 (saltos de corda): o padrão tem 3, 4, 2 e 2 notas.
+ *  - 10 (vai e volta): 3 notas. 11 (saltos de quarta) e 12 (saltos de quinta): 2 notas.
+ *  - 13 (três notas por corda): 3 notas. 14 (1-3-2-4): 4 notas. 15 (oitavas): 2 notas.
  */
 export function exerciseUnit(exercise: ExerciseId): number {
   switch (exercise) {
     case 4:
+    case 10:
+    case 13:
       return 3;
+    case 14:
+      return 4;
     case 5:
       return 4;
     case 6:
     case 9:
+    case 11:
+    case 12:
+    case 15:
       return 2;
     default:
       return 1;

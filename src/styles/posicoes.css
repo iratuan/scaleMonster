@@ -1,0 +1,85 @@
+/* Posições: cartões lado a lado (duas colunas a partir de 600 px) e uma abaixo da outra no celular. */
+.pos-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-4);
+}
+
+@media (min-width: 600px) {
+  .pos-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.pos-card {
+  min-width: 0;
+  padding: var(--s-3);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+}
+
+.pos-card.is-playing {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.pos-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--s-3);
+  margin-bottom: var(--s-3);
+}
+
+/* O braço compacto cabe na coluna: sem largura mínima fixa. */
+.pos-card .fb__board,
+.pos-card .fb--compact .fb__board {
+  min-width: 0;
+}
+
+/* Rodapé: o mascote conta a curiosidade num balão de fala. */
+.app-footer {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  margin: var(--s-6) auto var(--s-4);
+  max-width: 720px;
+  padding: var(--s-3) var(--s-4);
+  color: var(--muted);
+  font-size: var(--fs-sm);
+}
+
+.app-footer__avatar {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+}
+
+.app-footer__bubble {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+}
+
+/* Rabinho do balão, apontando para o mascote. */
+.app-footer__bubble::before {
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: 16px;
+  width: 12px;
+  height: 12px;
+  background: var(--surface);
+  transform: rotate(45deg);
+}
+
+.app-footer__bubble p {
+  margin: 2px 0 0;
+}
+
+.app-footer__label {
+  color: var(--accent);
+  font-weight: 600;
+}

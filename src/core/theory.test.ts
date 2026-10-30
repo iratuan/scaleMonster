@@ -8,7 +8,7 @@ import { getBackingTrack, harmonicField } from './backingTrack';
 import { isMatch, hitWindowMs, NoteJudge } from './judge';
 import { clampBpm, nextLoopState } from './autoBpm';
 import { analyze, emptyStats, recordSession } from './stats';
-import { displayFinger, nextWindowIndex } from './hints';
+import { displayFinger } from './hints';
 
 const ctx = (root: string, cat: string, mode: string) => {
   const c = getScaleContext(root, cat, mode);
@@ -268,16 +268,6 @@ describe('dicas da escala completa', () => {
     expect(displayFinger(undefined, 0)).toBe('');
   });
 
-  it('troca de janela ao tocar nota fora da atual', () => {
-    const wins: [number, number][] = [
-      [0, 4],
-      [2, 6],
-      [4, 8],
-    ];
-    expect(nextWindowIndex(0, 3, wins)).toBe(0);
-    expect(nextWindowIndex(0, 5, wins)).toBe(1);
-    expect(nextWindowIndex(0, 8, wins)).toBe(2);
-  });
 });
 
 describe('instrumentos', () => {
@@ -481,5 +471,11 @@ describe('rolagem automática por exercício', () => {
     expect(exerciseUnit(5)).toBe(4);
     expect(exerciseUnit(6)).toBe(2);
     expect(exerciseUnit(9)).toBe(2);
+    expect(exerciseUnit(10)).toBe(3);
+    expect(exerciseUnit(11)).toBe(2);
+    expect(exerciseUnit(12)).toBe(2);
+    expect(exerciseUnit(13)).toBe(3);
+    expect(exerciseUnit(14)).toBe(4);
+    expect(exerciseUnit(15)).toBe(2);
   });
 });

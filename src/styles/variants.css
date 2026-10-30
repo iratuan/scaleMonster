@@ -19,13 +19,29 @@
   visibility: hidden;
 }
 
+/* Linha de instrumentos: chips e número de cordas lado a lado; quebra de linha no celular estreito. */
+.instrumento-linha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3) var(--s-4);
+  margin: 0 0 var(--s-5);
+}
+
+.instrumento-linha > .chips {
+  margin: 0;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+}
+
 /* Número de cordas: segmento pequeno ao lado dos instrumentos. */
-.variants {
+.instrumento-linha > .variants {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: var(--s-3);
-  margin: calc(var(--s-2) * -1) 0 var(--s-5);
+  margin: 0;
 }
 
 .variants__label {

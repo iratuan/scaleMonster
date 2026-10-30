@@ -299,6 +299,30 @@ Testes: 80 passando.
 Pendências: validar o acompanhamento com exercícios 4 a 9 em execução real; APK e Windows ainda não
 regenerados com o braço deslizante.
 
+### 2026-10-27 — Percurso pelas 5 posições na escala completa
+
+Checkpoint antes da mudança: commit `a556226`, tag `checkpoint-braco-deslizante`.
+
+Percurso (escala completa, todos os exercícios):
+
+- Começa no grave do grupo de cordas e sobe até a posição 1.
+- Sobe e desce a posição 1, depois a 2, a 3, a 4 e a 5 (cada uma é um ciclo completo, dentro da sua janela).
+- Entre duas posições, a passagem anda por alturas vizinhas. Se a forma de uma posição não tem uma altura da
+  escala entre duas notas dela (ex.: ukulele com o grupo 3–4), essa altura é preenchida pela nota do grupo.
+- Depois da posição 5, sobe até o topo do braço (casas além da última janela) e desce até o grave.
+
+Decisões tomadas (podem ser revistas):
+
+1. Notas compartilhadas por posições sobrepostas são tocadas em cada posição que as contém, porque o percurso precisa delas.
+2. Nenhuma altura do grupo é pulada: o percurso passa por todas, em ordem.
+3. A volta desce até o grave do grupo, e não só até a base da posição 1.
+
+Verificação: 81 testes passando, incluindo: todas as alturas do grupo tocadas, sem pulo, em todas as
+combinações; posições visitadas em ordem (1 a 5).
+
+Pendências: validar o som do percurso no tablet; o script `verificar-execucao-baixo.mjs` ainda espera o
+tamanho antigo da escala completa e precisa ser atualizado.
+
 ## Status atual (2026-10-27)
 
 | Área | Situação | Evidência |
@@ -328,3 +352,37 @@ regenerados com o braço deslizante.
 4. **Posições para instrumentos que não são de 6 cordas.** Usam janelas de 5 trastes, não formas CAGED.
    Decidir se o usuário precisa de formas específicas por instrumento.
 5. **Violão e guitarra** têm a mesma afinação. Confirmar se o violão deve ter algum comportamento próprio.
+
+## Responsividade para celular na horizontal (primeira etapa)
+
+- Android travado em paisagem (`sensorLandscape`).
+- O app marca `<html class="paisagem-celular">` quando a janela é de paisagem e tem até 500 px de altura.
+  `src/styles/celular-paisagem.css` compacta o cabeçalho, põe as escolhas numa faixa de seis colunas,
+  recolhe legendas e aumenta a altura do braço. Desktop e retrato não mudam.
+- Causa encontrada no WebView do Android: um bloco `@media (prefers-reduced-motion)` ficou sem fechamento
+  depois de uma edição antiga do CSS, e tudo que vinha depois (fundo espacial e paisagem) era lido dentro
+  dele. Corrigido em `src/styles/apple.css`.
+- O WebView do Android não respeitou a camada espacial de fundo. Ela não é renderizada na plataforma nativa.
+- Pendente: o valor de velocidade (BPM) ainda fica cortado na paisagem; o retrato ainda não foi revisado.
+- Capturas: `docs/evidencias/telas/android-celular-paisagem.png` e `android-celular-retrato.png`.
+
+### Paisagem: seletor compacto e botão de escolhas
+
+- Na paisagem, o seletor de instrumento vai para o cabeçalho, como um controle compacto.
+- A faixa de escolhas (tom, escala, variação, grupo, exercício e velocidade) sai da tela e vira um botão
+  flutuante no canto. Ao tocar nele, abre uma folha com as escolhas em três colunas.
+- Capturas: `android-celular-paisagem.png` (braço em destaque) e `android-celular-escolhas.png` (folha aberta).
+- Ainda não revisado: o retrato e os demais instrumentos na paisagem.
+
+### 2026-10-30 — Escala completa mostra o padrão dos exercícios 2 a 15
+
+- **Decisão (escolha do usuário):** a escala completa passa a tocar o padrão de cada exercício, e não mais uma
+  varredura contínua. Saltos, oitavas e grupos aparecem como são. Notas de passagem só entram entre posições
+  (junção de ciclos), para a escala não ter buracos ao trocar de janela.
+- **Exercício 1 não muda:** continua com o zigue-zague e a varredura contínua. Os testes de vizinhança e de
+  varredura usam o exercício 1, então continuam valendo.
+- **Medição antes da mudança:** cada posição já tinha pares de oitava (guitarra 7–8, baixo 4–5, violão 9–11);
+  na escala completa não havia nenhum, porque as notas de passagem separavam os pares.
+- **Teste de regressão:** `playback.test.ts`, exercícios 13 a 15: posições com oitavas e escala completa com
+  pares de oitava consecutivos.
+- **Pendência:** conferir visualmente a escala completa nos exercícios 4 a 12 em aparelho real.

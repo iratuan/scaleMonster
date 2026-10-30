@@ -41,6 +41,8 @@ export function Fretboard(p: FretboardProps) {
   // Ordem visual: topo = corda mais aguda (ou a mais grave, se invertido).
   const rows = Array.from({ length: n }, (_, v) => (p.inverted ? n - 1 - v : v));
   const rowStyle = { gridTemplateRows: `repeat(${n}, var(--row, 44px))` };
+  // Espessura em pixels inteiros. O baixo tem cordas bem mais grossas que as de guitarra e violão.
+  const [minT, maxT] = p.ctx.instrument.id === 'baixo' ? [2.5, 6] : [1.5, 3];
 
   return (
     <div className={`fb${p.compact ? ' fb--compact' : ''}`} data-diagram={p.id} dir="ltr">
@@ -60,8 +62,8 @@ export function Fretboard(p: FretboardProps) {
               const active = p.activeKeys.has(k);
               const fb = p.feedback && p.feedback.key === k ? p.feedback : null;
               const finger = p.hints && active ? p.fingerOf(s, f) : '';
-              // Calibre: corda aguda fina (0,8 px), grave grossa (2,6 px).
-              const thickness = 0.8 + (v / Math.max(n - 1, 1)) * 1.8;
+              // Calibre em pixels inteiros (2 a 3 px): linhas fracionárias somem em telas de resolução normal.
+              const thickness = Math.round(minT + (v / Math.max(n - 1, 1)) * (maxT - minT));
               const middle = v === Math.floor((n - 1) / 2) && INLAYS.has(f) && f > 0;
 
               const cell = [
@@ -78,10 +80,11 @@ export function Fretboard(p: FretboardProps) {
                   className={cell}
                   data-string={s}
                   data-fret={f}
+                  data-wound={s >= Math.floor(n / 2) ? '' : undefined}
                   style={{ ['--string-h' as string]: `${thickness.toFixed(2)}px` }}
                 >
                   {middle && <span className="fb__inlay" />}
-                  {inScale && (
+                  {(inScale || active) && (
                     <span
                       className={[
                         'note',

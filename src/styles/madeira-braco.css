@@ -1,0 +1,71 @@
+/*
+ * Tema madeira: braço com aparência física.
+ * Madeira com veio, trastes de metal com brilho, cordas com volume (as graves enroladas),
+ * incrustações de madrepérola e fundo de braço plano. Só vale para data-skin="madeira".
+ */
+
+[data-skin='madeira'] .fb__scroll {
+  padding-top: 8px;
+}
+
+[data-skin='madeira'] .fb__board {
+  background:
+    repeating-linear-gradient(180deg, rgba(0, 0, 0, 0) 0 5px, rgba(18, 9, 2, 0.12) 6px, rgba(0, 0, 0, 0) 9px 17px, rgba(255, 210, 150, 0.06) 18px 19px),
+    repeating-linear-gradient(180deg, rgba(0, 0, 0, 0) 0 31px, rgba(0, 0, 0, 0.1) 33px, rgba(0, 0, 0, 0) 40px),
+    radial-gradient(120% 90% at 50% 35%, rgba(255, 200, 140, 0.14), transparent 62%),
+    linear-gradient(180deg, #4d3423 0%, #3b2717 45%, #2c1d10 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 220, 180, 0.12),
+    inset 0 -14px 22px rgba(0, 0, 0, 0.5),
+    0 16px 26px -12px rgba(0, 0, 0, 0.75);
+}
+
+/* Trastes de metal: faixa com brilho e sombra, sem a linha plana. */
+[data-skin='madeira'] .fb__cell {
+  border-left: 0;
+}
+
+[data-skin='madeira'] .fb__cell::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -2px;
+  width: 4px;
+  z-index: 0;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #5e5548 0%, #ece5d2 34%, #a39a88 58%, #2a231b 100%);
+  box-shadow: 1px 0 2px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
+/* Pestana (nut): osso mais largo e claro. */
+[data-skin='madeira'] .fb__cell--nut::after {
+  left: -5px;
+  width: 9px;
+  background: linear-gradient(90deg, #8c8270 0%, #fbf6e6 30%, #d9cfb6 62%, #5a4f40 100%);
+}
+
+/* Cordas com volume: luz no topo, sombra embaixo e sombra projetada sobre o braço. */
+[data-skin='madeira'] .fb__cell::before {
+  height: var(--string-h, 2px);
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 35%, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.5) 100%),
+    linear-gradient(180deg, #e2dccd, #8e887b);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.55);
+}
+
+/* Cordas graves: enrolamento metálico (estrias finas por cima da corda). */
+[data-skin='madeira'] .fb__cell[data-wound]::before {
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.32) 0 1px, rgba(255, 255, 255, 0.12) 1px 3px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 35%, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.55) 100%),
+    linear-gradient(180deg, #c9b994, #6f6446);
+}
+
+/* Incrustações de madrepérola com brilho. */
+[data-skin='madeira'] .fb__inlay {
+  background: radial-gradient(circle at 35% 30%, #fffdf5 0%, #e3dccb 52%, #8d8570 100%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), inset 0 -1px 1px rgba(0, 0, 0, 0.25);
+}

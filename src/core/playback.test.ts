@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { getPositionWindows } from './caged';
-import { buildFretboard } from './positions';
+import { buildFretboard, progressionOrder, ZIGZAG } from './positions';
 import { getScaleContext, NOTES, CATEGORIES, modesOf } from './notes';
 import { INSTRUMENTS, filterFor, midiToFreq, resolveInstrument, type InstrumentId } from './instruments';
 import { buildSequence, candidateNotes } from './exercise';
@@ -12,7 +12,7 @@ import type { DiagramData, ExerciseId, ScaleContext } from './types';
  * dentro do braço, com a altura correta e visível no desenho.
  */
 
-const EXERCISES: ExerciseId[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const EXERCISES: ExerciseId[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
 function contextsFor(id: InstrumentId, count: number, root: string, cat: string, mode: string): ScaleContext {
   const c = getScaleContext(root, cat, mode, resolveInstrument(id, count));
@@ -110,6 +110,53 @@ describe('execução das escalas: notas válidas, shape e destaque', () => {
     expect(buildSequence(base, 2, ctx.rootIdx, 6).length).toBe(2 * (2 * k - 1)); // cada nota duas vezes
     expect(buildSequence(base, 3, ctx.rootIdx, 6).length).toBe(3 * (2 * k - 1)); // cada nota três vezes
     expect(buildSequence(base, 7, ctx.rootIdx, 6).every((n) => ctx.notes.has(NOTES[n.noteIdx]))).toBe(true);
+  });
+
+  it('exercícios 10 a 12: vai e volta, saltos de quarta e de quinta, sem nota repetida seguida', () => {
+    const ctx = contextsFor('guitarra', 6, 'C', 'Modos Gregos', 'Jônio (Maior)');
+    const base = candidateNotes(ctx, 0, 15, 'all', false); // uma altura por vez, em ordem crescente
+    const [n0, n1, , n3, n4] = base;
+    const turn = buildSequence(base, 10, ctx.rootIdx, 6);
+    expect(turn.slice(0, 3).map((n) => n.absPitch)).toEqual([n0.absPitch, n1.absPitch, n0.absPitch]); // 1-2-1
+    const fourth = buildSequence(base, 11, ctx.rootIdx, 6);
+    expect(fourth.slice(0, 2).map((n) => n.absPitch)).toEqual([n0.absPitch, n3.absPitch]); // 1-4
+    const fifth = buildSequence(base, 12, ctx.rootIdx, 6);
+    expect(fifth.slice(0, 2).map((n) => n.absPitch)).toEqual([n0.absPitch, n4.absPitch]); // 1-5
+    for (const ex of [10, 11, 12] as ExerciseId[]) {
+      const seq = buildSequence(base, ex, ctx.rootIdx, 6);
+      expect(seq.length).toBeGreaterThan(base.length);
+      expect(seq.every((n, i) => i === 0 || n.absPitch !== seq[i - 1].absPitch)).toBe(true);
+      expect(seq.every((n) => ctx.notes.has(NOTES[n.noteIdx]))).toBe(true);
+    }
+  });
+
+  it('exercícios 13 a 15: três por corda, 1-3-2-4 e oitavas, com os intervalos certos', () => {
+    const ctx = contextsFor('guitarra', 6, 'C', 'Modos Gregos', 'Jônio (Maior)');
+    const base = candidateNotes(ctx, 0, 15, 'all', false);
+    // 13: a primeira corda varrida é a mais grave (índice de corda maior), em ordem de traste
+    const sweep = buildSequence(base, 13, ctx.rootIdx, 6);
+    const lowest = Math.max(...base.map((n) => n.string));
+    const firstBlock = sweep.slice(0, base.filter((n) => n.string === lowest).length); // ida: corda mais grave inteira
+    expect(firstBlock.every((n) => n.string === lowest)).toBe(true);
+    expect(firstBlock.map((n) => n.fret)).toEqual([...firstBlock.map((n) => n.fret)].sort((a, b) => a - b));
+    // 14: grupo 1-3-2-4 nas primeiras quatro notas
+    const perm = buildSequence(base, 14, ctx.rootIdx, 6);
+    expect(perm.slice(0, 4).map((n) => n.absPitch)).toEqual([base[0], base[2], base[1], base[3]].map((n) => n.absPitch));
+    // 15: cada par de oitavas tem doze semitons de diferença
+    const oct = buildSequence(candidateNotes(ctx, 0, 15, 'all', true), 15, ctx.rootIdx, 6);
+    expect(oct.length).toBeGreaterThan(0);
+    expect(oct[1].absPitch - oct[0].absPitch).toBe(12);
+    // Nas posições (janelas de 5 trastes), o exercício 15 tem pares de oitava em cada cartão com notas
+    const ctxOct = contextsFor('baixo', 4, 'C', 'Modos Gregos', 'Jônio (Maior)');
+    const fb = buildFretboard(ctxOct, 15, 'all');
+    for (const p of fb.positions.filter((x) => x.sequence.length > 0)) {
+      const pairs = p.sequence.filter((n, i) => i > 0 && n.absPitch - p.sequence[i - 1].absPitch === 12).length;
+      expect(pairs, `posição ${p.id} sem oitavas`).toBeGreaterThan(0);
+    }
+    // Na escala completa, o padrão aparece sem notas de passagem: oitavas seguidas (12 semitons).
+    const main = fb.main.sequence;
+    const mainPairs = main.filter((n, i) => i > 0 && n.absPitch - main[i - 1].absPitch === 12).length;
+    expect(mainPairs).toBeGreaterThan(0);
   });
 
   it('exercício 7 e 8 usam só as notas do acorde (tríade e tétrade) da escala', () => {
@@ -245,6 +292,7 @@ describe('escala tocada: sem notas puladas nem repetidas', () => {
                 const heights = heightsOf(ctx, f.id);
                 const fb = buildFretboard(ctx, 1, f.id);
                 const seq = fb.main.sequence;
+                const openEnd = fb.segments[0]?.end ?? 0;
                 const idx = (m: number) => heights.indexOf(m);
                 const tag = `${inst.id}/${count}c ${root} ${cat}/${mode} filtro ${f.id}`;
                 if (seq.length !== 2 * heights.length - 1 && seq.length !== 2 * heights.length) {
@@ -254,7 +302,8 @@ describe('escala tocada: sem notas puladas nem repetidas', () => {
                 const played = new Set(seq.map((n) => n.absPitch));
                 const lost = heights.filter((h) => !played.has(h));
                 if (lost.length) problems.push(`${tag}: alturas do grupo não tocadas: ${lost.join(',')}`);
-                for (let i = 1; i < seq.length; i++) {
+                // A primeira posição é varrida corda a corda (saltos de corda são esperados ali); o resto deve ser vizinho.
+for (let i = Math.max(1, openEnd + 1); i < seq.length; i++) {
                   const d = Math.abs(idx(seq[i].absPitch) - idx(seq[i - 1].absPitch));
                   if (d !== 1) problems.push(`${tag}: passo ${i} pulou ou repetiu (${seq[i - 1].absPitch} -> ${seq[i].absPitch})`);
                 }
@@ -278,7 +327,9 @@ describe('escala tocada: sem notas puladas nem repetidas', () => {
             const fb = buildFretboard(ctx, 1, 'all');
             const windows = getPositionWindows(ctx.rootIdx, ctx.cagedOffset, inst.frets);
             fb.positions.forEach((p, k) => {
-              const [ws, we] = windows[k];
+              const [ws, wsEnd] = windows[k];
+              // A última posição vai até o topo do braço (ver positions.ts).
+              const we = k === fb.positions.length - 1 ? inst.frets : wsEnd;
               // Alturas da janela original (a regra de cada posição), não do recorte visual.
               const heights = [...new Set(candidateNotes(ctx, ws, we, 'all', false).map((n) => n.absPitch))].sort((a, b) => a - b);
               for (let i = 1; i < p.sequence.length; i++) {
@@ -348,10 +399,13 @@ describe('escala completa: varredura contínua', () => {
               const ctx = contextsFor(inst.id, count, root, cat, mode);
               for (const f of resolved.filters) {
                 const heights = [...new Set(candidateNotes(ctx, 0, inst.frets, f.id, false).map((n) => n.absPitch))].sort((a, b) => a - b);
-                const seq = buildFretboard(ctx, 1, f.id).main.sequence;
+                const fbz = buildFretboard(ctx, 1, f.id);
+                const seq = fbz.main.sequence;
+                const openEnd = fbz.segments[0]?.end ?? 0;
                 const played = new Set(seq.map((n) => n.absPitch));
                 if (heights.some((h) => !played.has(h))) problems.push(`${inst.id}/${count}c ${root} ${cat}/${mode} ${f.id}: altura não tocada`);
-                for (let i = 1; i < seq.length; i++) {
+                // A primeira posição é varrida corda a corda (saltos de corda são esperados ali); o resto deve ser vizinho.
+for (let i = Math.max(1, openEnd + 1); i < seq.length; i++) {
                   const d = Math.abs(heights.indexOf(seq[i].absPitch) - heights.indexOf(seq[i - 1].absPitch));
                   if (d !== 1) problems.push(`${inst.id}/${count}c ${root} ${cat}/${mode} ${f.id}: passo ${i} pula`);
                 }
@@ -363,4 +417,81 @@ describe('escala completa: varredura contínua', () => {
     }
     expect(problems.slice(0, 10)).toEqual([]);
   }, 120000);
+});
+
+describe('percurso pelas posições', () => {
+  it('visita as posições em ordem (1 a 5) e volta, em todas as escalas', () => {
+    const problems: string[] = [];
+    for (const inst of Object.values(INSTRUMENTS)) {
+      for (const count of inst.variants) {
+        for (const cat of CATEGORIES) {
+          for (const mode of modesOf(cat)) {
+            const ctx = contextsFor(inst.id, count, 'C', cat, mode);
+            const fb = buildFretboard(ctx, 1, 'all');
+            const seq = fb.main.sequence;
+            // Primeira aparição do topo de cada posição, na ordem do percurso.
+            const firstAt = fb.positions.map((p) => {
+              const top = Math.max(...candidateNotes(ctx, p.start, p.end, 'all', false).map((n) => n.absPitch));
+              return seq.findIndex((n) => n.absPitch === top);
+            });
+            for (let k = 1; k < firstAt.length; k++) {
+              if (firstAt[k] !== -1 && firstAt[k - 1] !== -1 && firstAt[k] < firstAt[k - 1]) problems.push(`${inst.id}/${count}c ${cat}/${mode}: posição ${k + 1} antes da ${k}`);
+            }
+          }
+        }
+      }
+    }
+    expect(problems.slice(0, 10)).toEqual([]);
+  }, 120000);
+});
+
+describe('progressão pelas posições na escala completa', () => {
+  it('sobe de 1 a 5 e desce de 4 a 1 em cada volta', () => {
+    expect(progressionOrder(5)).toEqual([0, 1, 2, 3, 4, 3, 2, 1]);
+    expect(progressionOrder(1)).toEqual([0]);
+    expect(progressionOrder(2)).toEqual([0, 1]);
+  });
+
+  it('a escala completa segue essa ordem, com um trecho por posição', () => {
+    const ctx = contextsFor('guitarra', 6, 'C', 'Pentatônica', 'Maior');
+    const fb = buildFretboard(ctx, 1, 'all');
+    const order = fb.segments.map((s) => s.pos);
+    expect(order).toEqual([0, 1, 2, 3, 4, 3, 2, 1, 0]);
+    // Os trechos são contíguos e cobrem toda a sequência.
+    fb.segments.forEach((s, i) => {
+      if (i > 0) expect(s.start).toBe(fb.segments[i - 1].end);
+    });
+    expect(fb.segments[fb.segments.length - 1].end).toBe(fb.main.sequence.length);
+  });
+});
+
+describe('trechos da escala completa', () => {
+  it('o primeiro trecho começa no passo 0 e cada passo pertence a um trecho', () => {
+    const ctx = contextsFor('guitarra', 6, 'C', 'Modos Gregos', 'Jônio (Maior)');
+    const fb = buildFretboard(ctx, 1, 'all');
+    expect(fb.segments[0].start).toBe(0);
+    for (let step = 0; step < fb.main.sequence.length; step++) {
+      expect(fb.segments.some((s) => step >= s.start && step < s.end)).toBe(true);
+    }
+  });
+});
+
+describe('zigue-zague da escala completa (exercício 1)', () => {
+  it('cada posição é percorrida na direção do percurso e a volta fecha no começo', () => {
+    const ctx = contextsFor('guitarra', 6, 'C', 'Pentatônica', 'Maior');
+    const fb = buildFretboard(ctx, 1, 'all');
+    const seq = fb.main.sequence;
+    const problems: string[] = [];
+    fb.segments.forEach((s, i) => {
+      const dir = ZIGZAG[i]?.[1];
+      const body = seq.slice(s.cycle, s.end);
+      for (let k = 0; k + 1 < body.length; k++) {
+        const d = body[k + 1].absPitch - body[k].absPitch;
+        if (dir === 'U' && d < 0) problems.push(`trecho ${i} (posição ${s.pos + 1}) desceu onde devia subir`);
+        if (dir === 'D' && d > 0) problems.push(`trecho ${i} (posição ${s.pos + 1}) subiu onde devia descer`);
+      }
+    });
+    expect(problems.slice(0, 5)).toEqual([]);
+    expect(fb.segments.length).toBe(ZIGZAG.length);
+  });
 });

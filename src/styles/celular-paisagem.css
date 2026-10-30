@@ -1,0 +1,214 @@
+/*
+ * Celular na horizontal: o app marca <html class="paisagem-celular"> quando a janela é de paisagem e tem
+ * até 500 px de altura (ver src/main.tsx). A classe, e não a media query, decide o layout compacto.
+ */
+
+html.paisagem-celular .app {
+  padding: 0 12px 16px;
+}
+
+/* Cabeçalho: uma faixa fina, com ações compactas. */
+html.paisagem-celular .app .header {
+  padding: 6px 12px !important;
+  margin-bottom: 8px;
+}
+
+html.paisagem-celular .app .header__title {
+  font-size: 14px;
+}
+
+html.paisagem-celular .app .header__title img {
+  width: 22px;
+  height: 22px;
+}
+
+html.paisagem-celular .app .header__actions {
+  gap: 4px;
+}
+
+html.paisagem-celular .app .icon-btn {
+  width: 32px;
+  height: 32px;
+}
+
+/* Instrumentos: segmentado mais baixo. */
+html.paisagem-celular .app .chips {
+  margin-bottom: 8px;
+}
+
+html.paisagem-celular .app .chip {
+  min-height: 30px;
+  padding: 0 10px;
+  font-size: 13px;
+}
+
+/* Escolhas: uma faixa de seis controles em vez de duas linhas altas. */
+html.paisagem-celular .app .toolbar {
+  grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+html.paisagem-celular .app .toolbar .cb {
+  padding: 6px 8px;
+  min-width: 0;
+}
+
+html.paisagem-celular .app .toolbar .cb__label {
+  font-size: 10px;
+  line-height: 1.2;
+}
+
+html.paisagem-celular .app .toolbar .cb__value {
+  font-size: 13px;
+}
+
+/* Título e legendas recolhidos: a tela é para tocar. */
+html.paisagem-celular .app .summary {
+  margin-bottom: 6px;
+}
+
+html.paisagem-celular .app .summary__desc,
+html.paisagem-celular .app .section .caption,
+html.paisagem-celular .app .neck__meta,
+html.paisagem-celular .app-footer {
+  display: none;
+}
+
+html.paisagem-celular .app .summary__title,
+html.paisagem-celular .app .hero__title {
+  font-size: 18px;
+}
+
+html.paisagem-celular .app .section {
+  margin-bottom: 10px;
+}
+
+html.paisagem-celular .app .section__head {
+  margin-bottom: 4px;
+}
+
+html.paisagem-celular .app .section__label {
+  font-size: 11px;
+}
+
+/* min-width/min-height também: a regra de toque (44px de altura) não pode esticar só a altura e deixar o botão oval. */
+html.paisagem-celular .app .play {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+}
+
+html.paisagem-celular .app .surface {
+  padding: 8px;
+}
+
+/* Braço: mais altura por corda, cabe mais no pouco espaço. */
+html.paisagem-celular .app .fb {
+  --row: 30px;
+}
+
+html.paisagem-celular .app .fb--compact {
+  --row: 24px;
+}
+
+/* Cartões de posição: compactos, um abaixo do outro. */
+html.paisagem-celular .app .pos-grid {
+  gap: 8px;
+}
+
+html.paisagem-celular .app .pos-card {
+  padding: 8px;
+  border-radius: 16px;
+}
+
+html.paisagem-celular .app .pos-card__head {
+  margin-bottom: 4px;
+}
+
+html.paisagem-celular .app .neck__title {
+  font-size: 14px;
+}
+
+/* Respiro abaixo do cabeçalho e controles de velocidade menores, para o valor não ser cortado. */
+html.paisagem-celular .app .chips {
+  margin-top: 8px;
+}
+
+html.paisagem-celular .app .bpm button {
+  width: 28px;
+  height: 28px;
+}
+
+/* Instrumento compacto no cabeçalho, barra de escolhas num botão flutuante. Só na paisagem. */
+.instrumento-compacto {
+  display: none;
+}
+
+html.paisagem-celular .instrumento-compacto {
+  display: inline-block;
+  height: 32px;
+  max-width: 150px;
+  padding: 0 10px;
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+html.paisagem-celular .instrumento-linha > .chips,
+html.paisagem-celular .page > .toolbar {
+  display: none;
+}
+
+.fab-escolhas {
+  display: none;
+}
+
+html.paisagem-celular .fab-escolhas {
+  display: grid;
+  place-items: center;
+  position: fixed;
+  right: max(14px, env(safe-area-inset-right));
+  bottom: max(14px, env(safe-area-inset-bottom));
+  z-index: 30;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: 0 8px 22px -6px rgba(0, 0, 0, 0.55);
+}
+
+/* Dentro da folha, a barra de escolhas cabe em duas colunas. */
+html.paisagem-celular .panel .toolbar {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 0;
+}
+
+/* Painel de escolhas na paisagem: três colunas em duas linhas, com os rótulos inteiros. */
+html.paisagem-celular .panel--sheet {
+  max-width: 720px;
+}
+
+html.paisagem-celular .panel .toolbar {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+html.paisagem-celular .panel .toolbar .cb__label {
+  font-size: 11px;
+}
+
+/* Nº de cordas: faixa baixa e sem rótulo, para dar espaço ao braço. */
+html.paisagem-celular .app .variants {
+  margin: 0 0 6px;
+}
+
+html.paisagem-celular .app .variants__label {
+  display: none;
+}
