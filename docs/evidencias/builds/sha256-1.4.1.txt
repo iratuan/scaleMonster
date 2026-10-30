@@ -1,0 +1,4 @@
+38a595d7fbb4839b13342c9dde0fe7ce7e97f6e898050d2d9cd025a6144777f9 *ScaleMonster Setup 1.4.1.exe
+9e8845a6bd90e44e63bce66aa94b82421aed5b1efcd1f0fabc016b5af731e627 *ScaleMonster 1.4.1.exe
+3d730379c4475c4b8d0b0414446da908b6ab46c4b605a5c1f1e73eeb6380c060 *ScaleMonster-1.4.1-android.apk
+3d626738c90adba89e247b53c08cbae6114e34d1437f43c1112c4d24e121bad8 *ScaleMonster-web-1.4.1.zip

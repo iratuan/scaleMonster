@@ -1,6 +1,6 @@
 {
   "name": "guitarra-escalas-v3",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "private": true,
   "description": "ScaleMonster: tutor de escalas para guitarra e baixo (web, desktop e Android)",
   "type": "module",
