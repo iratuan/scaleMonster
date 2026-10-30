@@ -1,5 +1,5 @@
 // Cache do app para uso offline. Estratégia: serve do cache e atualiza em segundo plano.
-const CACHE = 'tutor-escalas-v10';
+const CACHE = 'tutor-escalas-v12';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon.svg', './logo-mascote.svg'];
 
 self.addEventListener('install', (event) => {
