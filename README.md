@@ -138,11 +138,11 @@ Depois abra o endereço que aparece no terminal.
 
 Para o APK: `npx cap sync android` e depois `cd android && ./gradlew assembleDebug`.
 
-## Publicação
+## Versão web
 
-A versão web é publicada automaticamente no GitHub Pages a cada push na branch `main`, pelo workflow
-[`.github/workflows/pages.yml`](.github/workflows/pages.yml). Para isso, a fonte do Pages precisa estar
-em **Settings → Pages → Source: GitHub Actions**.
+A versão web está no ar em **https://iratuan.github.io/scaleMonster/**. Ela é atualizada a cada push na
+branch `main`, pelo workflow [`.github/workflows/pages.yml`](.github/workflows/pages.yml), que gera o
+`dist/` e publica no GitHub Pages. A fonte do Pages está configurada como GitHub Actions.
 
 ## Estrutura
 
