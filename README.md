@@ -6,7 +6,13 @@ O **ScaleMonster** mostra as escalas no braço, toca cada nota, percorre as cinc
 e confere se você tocou certo pelo microfone. Funciona no navegador, no Windows, no Android
 e (a gerar) no macOS.
 
-**Versão 1.4.1.** Idiomas iniciais: português, inglês e alemão.
+**Versão 1.4.2.** Idiomas iniciais: português, inglês e alemão.
+
+## Origem
+
+Este projeto é um fork do [guitarra-escalas](https://github.com/heltongoncalves/guitarra-escalas),
+de Helton Gonçalves, usado com autorização do autor. A versão original em JavaScript puro foi
+refatorada para React e TypeScript, com novos instrumentos, exercícios, temas e a marca ScaleMonster.
 
 ---
 
@@ -106,9 +112,9 @@ Para o APK: `npx cap sync android` e depois `cd android && ./gradlew assembleDeb
 
 | Plataforma | Como obter | Documentação |
 | --- | --- | --- |
-| Web | `release/ScaleMonster-web-1.4.1.zip` (site estático) | [`docs/distribuicao-web.md`](docs/distribuicao-web.md) |
-| Windows | `release/ScaleMonster Setup 1.4.1.exe` (instalador com seletor de idioma) ou `ScaleMonster 1.4.1.exe` (portátil) | `npm run electron:build` |
-| Android | `release/ScaleMonster-1.4.1-android.apk` (depuração) | seção "Como rodar" acima |
+| Web | `release/ScaleMonster-web-1.4.2.zip` (site estático) | [`docs/distribuicao-web.md`](docs/distribuicao-web.md) |
+| Windows | `release/ScaleMonster Setup 1.4.2.exe` (instalador com seletor de idioma) ou `ScaleMonster 1.4.2.exe` (portátil) | `npm run electron:build` |
+| Android | `release/ScaleMonster-1.4.2-android.apk` (depuração) | seção "Como rodar" acima |
 | macOS | a gerar num Mac | [`docs/build-macos.md`](docs/build-macos.md) |
 
 Os instaladores ainda não estão assinados. No Windows, o SmartScreen pode avisar sobre o editor.
