@@ -88,6 +88,7 @@
   flex-shrink: 0;
   width: 16px;
   height: 16px;
+  margin-right: var(--s-2);
   color: var(--muted);
 }
 

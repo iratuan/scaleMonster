@@ -38,7 +38,7 @@ h3 {
   max-width: none;
   margin: calc(var(--s-4) * -1) calc(var(--s-4) * -1) var(--s-4);
   --page-w: 920px;
-  padding: calc(var(--s-3) + var(--s-4)) max(var(--s-4), calc((100% - var(--page-w)) / 2 + var(--s-4))) var(--s-3);
+  padding: var(--s-2) max(var(--s-4), calc((100% - var(--page-w)) / 2 + var(--s-4))) var(--s-2);
   background: color-mix(in srgb, var(--bg) 78%, transparent);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   backdrop-filter: saturate(180%) blur(20px);
@@ -68,7 +68,7 @@ h3 {
 .header__title img,
 .brand-logo {
   display: block;
-  height: 48px;
+  height: 36px;
   width: auto;
 }
 
@@ -101,7 +101,7 @@ h3 {
 @media (min-width: 900px) {
   .header {
     margin-top: calc(var(--s-6) * -1);
-    padding-top: calc(var(--s-3) + var(--s-6));
+    padding-top: var(--s-3);
   }
 }
 
