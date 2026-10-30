@@ -340,21 +340,21 @@ h3 {
   min-width: 0;
 }
 
+/* Ícones planos e monocromáticos: só o traço, sem ladrilho colorido. */
 .setting-tile {
   display: inline-grid;
   place-items: center;
   flex-shrink: 0;
   width: 30px;
   height: 30px;
-  border-radius: 8px;
-  color: #ffffff;
+  color: var(--muted);
 }
 
 .btn .setting-tile {
   width: 22px;
   height: 22px;
-  border-radius: 6px;
   margin-right: var(--s-2);
+  color: inherit;
 }
 
 .btn .setting-tile svg {
@@ -386,6 +386,69 @@ h3 {
 [data-skin='vintage'] .space-backdrop,
 [data-skin='madeira'] .space-backdrop {
   opacity: 0.35;
+}
+
+/* Kindle: página plana, sem fundo espacial; leitura em fonte serifada. */
+[data-skin='kindle'] .space-backdrop {
+  display: none;
+}
+
+[data-skin='kindle'] .app {
+  font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Times New Roman', serif;
+}
+
+/* Kindle flat: sem arredondamentos, sem sombras e sem vidro. Só preenchimentos sólidos e linhas
+   de uma cor. Os raios de tokens também ficam em zero, para os componentes que usam --r-*. */
+[data-skin='kindle'] {
+  --r-sm: 0px;
+  --r-md: 0px;
+  --r-lg: 0px;
+  --r-xl: 0px;
+  --r-pill: 0px;
+}
+
+/* As notas (classe note) continuam redondas: são o único elemento circular do desenho. */
+[data-skin='kindle'] *:not([class*='note']),
+[data-skin='kindle'] *:not([class*='note'])::before,
+[data-skin='kindle'] *:not([class*='note'])::after {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Contorno da nota fora do exercício: continua com borda sólida, sem a sombra interna. */
+[data-skin='kindle'] .note--off {
+  box-shadow: inset 0 0 0 1px var(--note-off-ink) !important;
+}
+
+[data-skin='kindle'] :focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Superfícies: um tom só, sem a borda translúcida do vidro. A separação entre blocos é a cor. */
+[data-skin='kindle'] .group__card,
+[data-skin='kindle'] .surface,
+[data-skin='kindle'] .pos-card,
+[data-skin='kindle'] .chips,
+[data-skin='kindle'] .cb:not(.cb--inline) {
+  background: var(--surface);
+  border: 0;
+}
+
+[data-skin='kindle'] .cb.cb--inline {
+  border: 0;
+  background: transparent;
+}
+
+[data-skin='kindle'] .cb.cb--inline:hover,
+[data-skin='kindle'] .cb.cb--inline[data-state='open'] {
+  background: var(--surface-2);
+}
+
+[data-skin='kindle'] .group__card > * + * {
+  border-top: 1px solid var(--line);
 }
 
 @keyframes space-drift {

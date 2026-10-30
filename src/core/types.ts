@@ -1,6 +1,6 @@
 import type { Instrument } from './instruments';
 
-export type Skin = 'light' | 'dark' | 'vintage' | 'madeira';
+export type Skin = 'light' | 'dark' | 'vintage' | 'madeira' | 'kindle';
 
 /** Identificador do filtro de cordas do instrumento atual (ex.: 'all', '1-3'). */
 export type StringFilter = string;

@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 /**
  * Ícones planos das configurações: um traço só, na grade de 24 px, com pontas arredondadas.
- * Cada um vai dentro de um ladrilho colorido (padrão das configurações do iOS).
+ * Monocromáticos, sem ladrilho colorido, para manter o app minimalista.
  */
 
 export type SettingIconName =
@@ -128,10 +128,10 @@ interface SettingIconProps {
   tone: SettingTone;
 }
 
-/** Ladrilho plano com o ícone de uma opção de configuração. */
-export function SettingIcon({ name, tone }: SettingIconProps) {
+/** Ícone de uma opção de configuração: traço monocromático (o grupo de cor não é mais mostrado). */
+export function SettingIcon({ name }: SettingIconProps) {
   return (
-    <span className="setting-tile" style={{ background: TONE_COLOR[tone] }} aria-hidden="true">
+    <span className="setting-tile" aria-hidden="true">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         {GLYPHS[name]}
       </svg>

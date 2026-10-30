@@ -5,6 +5,8 @@ import { CLEF_CHOICES, type ClefChoice } from '../../core/notation';
 import { useSettings } from '../../state/store';
 import { Modal } from './Modal';
 import { SettingIcon, type SettingIconName, type SettingTone } from './SettingIcon';
+import { Combobox } from './Combobox';
+import { skinOptions } from './skinOptions';
 
 interface SheetProps {
   t: (key: string) => string;
@@ -14,12 +16,6 @@ interface SheetProps {
   micStatus: string;
 }
 
-const SKINS: { value: Skin; key: string }[] = [
-  { value: 'light', key: 'skin_light' },
-  { value: 'dark', key: 'skin_dark' },
-  { value: 'vintage', key: 'skin_vintage' },
-  { value: 'madeira', key: 'skin_madeira' },
-];
 
 interface ToggleProps {
   icon: SettingIconName;
@@ -130,13 +126,12 @@ export function SettingsSheet({ t, onClose, onHelp, onBackingTrack, micStatus }:
         <h3 className="group__label">{t('lbl_theme')}</h3>
         <div className="group__card">
           <Field icon="theme" tone="purple" label={t('lbl_theme')}>
-            <div className="seg" role="radiogroup" aria-label={t('lbl_theme')}>
-              {SKINS.map((k) => (
-                <button key={k.value} type="button" role="radio" aria-checked={s.skin === k.value} onClick={() => s.setSkin(k.value)}>
-                  {t(k.key)}
-                </button>
-              ))}
-            </div>
+            <Combobox
+              variant="inline"
+              value={s.skin}
+              options={skinOptions(t)}
+              onChange={(v) => s.setSkin(v as Skin)}
+            />
           </Field>
           <Field icon="volume" tone="gray" label={t('lbl_volume')} as="label">
             <input

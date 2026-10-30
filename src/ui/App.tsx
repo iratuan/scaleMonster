@@ -25,13 +25,18 @@ import { ToolsMenu } from './components/ToolsMenu';
 import { TunerModal } from './components/TunerModal';
 import { MetronomeModal } from './components/MetronomeModal';
 import { Modal } from './components/Modal';
-import { MenuIcon, GearIcon, HelpIcon, LogoIcon, MoonIcon, NoteIcon, PlayIcon, StopIcon, SunIcon } from './components/Icons';
-
-const SKIN_ORDER: Skin[] = ['dark', 'light', 'vintage', 'madeira'];
+import { MenuIcon, GearIcon, HelpIcon, LogoIcon, PlayIcon, StopIcon } from './components/Icons';
+import { Combobox } from './components/Combobox';
+import { skinOptions } from './components/skinOptions';
 
 export default function App() {
   const s = useSettings();
   const t = (key: string, vars?: Record<string, string | number>) => translate(s.lang, key, vars);
+
+  // Tema no <html>: menus e diálogos do Radix são montados em <body>, fora do div.app.
+  useEffect(() => {
+    document.documentElement.dataset.skin = s.skin;
+  }, [s.skin]);
 
   const instrument = useMemo(() => resolveInstrument(s.instrument, s.stringCount), [s.instrument, s.stringCount]);
   const spec = INSTRUMENT_LIST.find((i) => i.id === s.instrument) ?? INSTRUMENT_LIST[0];
@@ -120,8 +125,6 @@ export default function App() {
     (pb.activeId === 'main' ? (curSeg ? model.main.sequence.slice(curSeg.start, curSeg.end) : []) : model.main.activePairs).map((p) => `${p.string}-${p.fret}`),
   );
   const feedbackMain = pb.feedback && pb.feedback.diagramId === 'main' ? pb.feedback : null;
-  const nextSkin = () => s.setSkin(SKIN_ORDER[(SKIN_ORDER.indexOf(s.skin) + 1) % SKIN_ORDER.length]);
-  const SkinIcon = s.skin === 'light' ? SunIcon : s.skin === 'dark' ? MoonIcon : NoteIcon;
   const rootName = rootNames(s.lang)[NOTES.indexOf(s.root)] ?? s.root;
 
   return (
@@ -147,9 +150,12 @@ export default function App() {
           </select>
 
         <div className="header__actions">
-          <button type="button" className="icon-btn" onClick={nextSkin} aria-label={t('lbl_theme')} title={t('lbl_theme')}>
-            <SkinIcon width={18} height={18} />
-          </button>
+          <Combobox
+            variant="inline"
+            value={s.skin}
+            options={skinOptions(t)}
+            onChange={(v) => s.setSkin(v as Skin)}
+          />
           <ToolsMenu t={t} onMetronome={() => setMetronome(true)} onTuner={() => setTuner(true)} />
           <button type="button" className="icon-btn" onClick={() => setHelp(true)} aria-label={t('btn_help')} title={t('btn_help')}>
             <HelpIcon width={18} height={18} />

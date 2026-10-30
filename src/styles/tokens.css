@@ -155,3 +155,34 @@
   --scrim: rgba(12, 8, 4, 0.6);
   --shadow: none;
 }
+
+/* Kindle: papel creme e tinta escura, sem brilho nem fundo espacial */
+[data-skin='kindle'] {
+  color-scheme: light;
+  --bg: #f4f1ea;
+  --surface: #faf8f3;
+  --surface-2: #ebe7dc;
+  --surface-3: #dfdace;
+  --text: #1d1c1a;
+  --muted: #6b665c;
+  --faint: #6b665c;
+  --line: #dcd6c6;
+  --board: #faf8f3;
+  --fret: rgba(29, 28, 26, 0.22);
+  --fret-strong: rgba(29, 28, 26, 0.55);
+  --string: #5d584e;
+  --nut: #2e2b26;
+  --inlay: rgba(29, 28, 26, 0.2);
+  --note-on: #1d1c1a;
+  --note-on-ink: #f4f1ea;
+  --note-off: #e4dfd2;
+  --note-off-ink: #7a7467;
+  --accent: #2f5d46;
+  --accent-ink: #faf8f3;
+  --accent-soft: rgba(47, 93, 70, 0.16);
+  --good: #2f5d46;
+  --bad: #9b3b26;
+  --dock: rgba(250, 248, 243, 0.94);
+  --scrim: rgba(60, 52, 38, 0.35);
+  --shadow: none;
+}
