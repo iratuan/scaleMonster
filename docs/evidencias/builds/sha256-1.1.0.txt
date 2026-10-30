@@ -1,0 +1,4 @@
+c3c5034a98075fb31eb411c4884126dcd3f4d6c6a95b7dea3577a92dc3d7e38a *Tutor de Escalas Setup 1.1.0.exe
+4f5a7de4b6d9158e085ea69dd518c5b40c7838f11365f3d0d3d4aba27ab602cb *Tutor de Escalas 1.1.0.exe
+d3091f8926ec5f5f00c9c6d77e4a5d00fce40d13cf796df0dc5c46bdc10e3f66 *Tutor-de-Escalas-1.1.0-android.apk
+158fb7aa31b0c341972812eb5f84b1969e5c45b41a53a5f3271615047fe95467 *tutor-escalas-web-1.1.0.zip
