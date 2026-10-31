@@ -1,6 +1,6 @@
-# Distribuição web (1.4.2)
+# Distribuição web (1.4.3)
 
-O pacote `release/ScaleMonster-web-1.4.2.zip` contém o site pronto (pasta `dist`). Não há servidor
+O pacote `release/ScaleMonster-web-1.4.3.zip` contém o site pronto (pasta `dist`). Não há servidor
 Node ou PHP: é só um conjunto de arquivos estáticos.
 
 ## Conteúdo

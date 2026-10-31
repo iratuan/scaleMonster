@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <img alt="versão 1.4.2" src="https://img.shields.io/badge/vers%C3%A3o-1.4.2-f39c12">
+  <img alt="versão 1.4.3" src="https://img.shields.io/badge/vers%C3%A3o-1.4.3-f39c12">
   <img alt="testes" src="https://img.shields.io/badge/testes-97%20passando-2ecc71">
   <img alt="React e TypeScript" src="https://img.shields.io/badge/React%20%2B%20TypeScript-61dafb">
   <img alt="Electron, Capacitor e web" src="https://img.shields.io/badge/Electron%20%7C%20Capacitor%20%7C%20PWA-333">
@@ -108,9 +108,9 @@ Os arquivos ficam na pasta `release/` e não estão no repositório. Use a vers�
 
 | Plataforma | Arquivo | Observação |
 | --- | --- | --- |
-| **Web** | `ScaleMonster-web-1.4.2.zip` ou [a versão online](https://iratuan.github.io/scaleMonster/) | Não exige instalação |
-| **Windows** | `ScaleMonster Setup 1.4.2.exe` (instalador) ou `ScaleMonster 1.4.2.exe` (portátil) | Sem assinatura: o SmartScreen pode avisar |
-| **Android** | `ScaleMonster-1.4.2-android.apk` | Versão de depuração; permita a instalação de fontes desconhecidas |
+| **Web** | `ScaleMonster-web-1.4.3.zip` ou [a versão online](https://iratuan.github.io/scaleMonster/) | Não exige instalação |
+| **Windows** | `ScaleMonster Setup 1.4.3.exe` (instalador) ou `ScaleMonster 1.4.3.exe` (portátil) | Sem assinatura: o SmartScreen pode avisar |
+| **Android** | `ScaleMonster-1.4.3-android.apk` | Versão de depuração; permita a instalação de fontes desconhecidas |
 | **macOS** | gerado a partir do código, num Mac | Veja [`docs/build-macos.md`](docs/build-macos.md) |
 
 Os hashes SHA-256 de cada versão estão em [`docs/evidencias/builds/`](docs/evidencias/builds/).

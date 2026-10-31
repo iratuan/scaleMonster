@@ -23,6 +23,20 @@
   pointer-events: none;
 }
 
+/* Vídeo de abertura: cobre a tela; a cor da borda do vídeo evita caixa visível em celulares. */
+.splash--video {
+  background: #030708;
+  cursor: pointer;
+}
+
+.splash__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #030708;
+}
+
 .splash__mark {
   display: grid;
   place-items: center;
