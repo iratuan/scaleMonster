@@ -69,6 +69,30 @@ export function recordSession(data: StatsData, s: SessionResult): StatsData {
   };
 }
 
+/** Taxa de acerto em % (0 a 100) de uma rodada, arredondada. Sem notas avaliadas, devolve 0. */
+export function accuracyPct(hits: number, misses: number): number {
+  const total = hits + misses;
+  return total > 0 ? Math.round((hits / total) * 100) : 0;
+}
+
+/** Última rodada registrada da mesma escala (antes da atual), ou null se for a primeira. */
+export function previousSession(data: StatsData, scaleName: string): HistoryItem | null {
+  return data.history.find((h) => h.id === scaleName) ?? null;
+}
+
+export type Progress =
+  | { kind: 'first' }
+  | { kind: 'up' | 'down' | 'same'; diff: number; previousPct: number };
+
+/** Compara a taxa atual com a da rodada anterior da mesma escala. */
+export function compareWithPrevious(currentPct: number, prev: HistoryItem | null): Progress {
+  if (!prev) return { kind: 'first' };
+  const previousPct = accuracyPct(prev.hits, prev.misses);
+  const diff = currentPct - previousPct;
+  if (diff === 0) return { kind: 'same', diff: 0, previousPct };
+  return { kind: diff > 0 ? 'up' : 'down', diff: Math.abs(diff), previousPct };
+}
+
 export function analyze(data: StatsData): Analysis | null {
   const keys = Object.keys(data.scaleStats);
   if (keys.length === 0) return null;

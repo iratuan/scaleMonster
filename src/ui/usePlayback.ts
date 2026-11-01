@@ -5,11 +5,21 @@ import { playClick, playPluck } from '../audio/synth';
 import { Sequencer } from '../audio/sequencer';
 import { clampBpm, nextLoopState } from '../core/autoBpm';
 import { hitWindowMs } from '../core/judge';
-import { analyze, recordSession, type Analysis } from '../core/stats';
+import {
+  accuracyPct,
+  analyze,
+  compareWithPrevious,
+  previousSession,
+  recordSession,
+  type Analysis,
+  type Progress,
+} from '../core/stats';
 import type { PlayNote } from '../core/types';
 import { useSettings } from '../state/store';
 import { loadStats, saveStats } from '../state/statsStorage';
 import { scoreTitle } from './scoreText';
+import { applyRound, type BadgeId } from '../core/progress';
+import { loadProfile, saveProfile } from '../state/progressStorage';
 import { NOTES } from '../core/notes';
 
 export type MicStatus = 'off' | 'calibrating' | 'ready' | 'error';
@@ -28,6 +38,12 @@ export interface ScoreSummary {
   pct: number;
   title: string;
   analysis: Analysis | null;
+  /** Notas erradas nesta rodada, sem repetição, na ordem em que apareceram ('corda-traste'). */
+  missedNotes: string[];
+  /** Evolução em relação à última rodada desta escala. */
+  progress: Progress;
+  /** Badges conquistados nesta rodada. */
+  newBadges: BadgeId[];
 }
 
 interface MicTarget {
@@ -136,7 +152,10 @@ export function usePlayback(scaleName: string) {
     if (withScore && useSettings.getState().challenge && c.total > 0) {
       const pct = Math.round((c.hits / c.total) * 100);
       const durationSec = sessionStart.current ? Math.round((Date.now() - sessionStart.current) / 1000) : 0;
-      const next = recordSession(loadStats(), {
+      const before = loadStats();
+      // Mesma base da história (acertos ÷ avaliadas), para a comparação ser justa entre rodadas.
+      const progress = compareWithPrevious(accuracyPct(c.hits, c.misses), previousSession(before, scaleNameRef.current));
+      const next = recordSession(before, {
         scaleName: scaleNameRef.current,
         durationSec,
         hits: c.hits,
@@ -144,6 +163,14 @@ export function usePlayback(scaleName: string) {
         missedNotes: c.missed,
       });
       saveStats(next);
+      const round = applyRound(loadProfile(), {
+        scaleName: scaleNameRef.current,
+        hits: c.hits,
+        misses: c.misses,
+        bpm: useSettings.getState().bpm,
+        date: new Date().toISOString(),
+      });
+      saveProfile(round.profile);
       setScore({
         hits: c.hits,
         misses: c.misses,
@@ -151,6 +178,9 @@ export function usePlayback(scaleName: string) {
         pct,
         title: scoreTitle(useSettings.getState().lang, pct),
         analysis: analyze(next),
+        missedNotes: [...new Set(c.missed)],
+        progress,
+        newBadges: round.unlocked,
       });
     }
     sessionStart.current = null;

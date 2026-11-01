@@ -1,4 +1,4 @@
-import { fretWidths } from '../../core/caged';
+import { fretWidths, fretWidthsOn } from '../../core/caged';
 import { noteOnString } from '../../core/notes';
 import type { ScaleContext } from '../../core/types';
 
@@ -20,6 +20,11 @@ export interface FretboardProps {
   feedback: { key: string; kind: 'hit' | 'miss'; seq: number } | null;
   labels: { hit: string; miss: string };
   compact?: boolean;
+  /**
+   * Braço de referência (o completo): os trastes usam a largura medida dele (--neck-w),
+   * e assim o recorte de uma posição tem a mesma escala do braço inteiro.
+   */
+  reference?: { start: number; end: number };
 }
 
 /** Marcadores de casa, como num braço real. */
@@ -34,9 +39,13 @@ const key = (s: number, f: number) => `${s}-${f}`;
 export function Fretboard(p: FretboardProps) {
   const strings = p.ctx.instrument.strings;
   const n = strings.length;
-  const cols = fretWidths(p.start, p.end)
-    .map((w) => `${w.toFixed(3)}fr`)
-    .join(' ');
+  const cols = p.reference
+    ? fretWidthsOn(p.start, p.end, p.reference.start, p.reference.end)
+        .map((w) => `calc(var(--neck-w, 100%) * ${(w / 100).toFixed(5)})`)
+        .join(' ')
+    : fretWidths(p.start, p.end)
+        .map((w) => `${w.toFixed(3)}fr`)
+        .join(' ');
   const frets = Array.from({ length: p.end - p.start + 1 }, (_, i) => p.start + i);
   // Ordem visual: topo = corda mais aguda (ou a mais grave, se invertido).
   const rows = Array.from({ length: n }, (_, v) => (p.inverted ? n - 1 - v : v));

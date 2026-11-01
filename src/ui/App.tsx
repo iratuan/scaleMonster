@@ -12,6 +12,7 @@ import { useSettings } from '../state/store';
 import { clearStats } from '../state/statsStorage';
 import { diagramName, usePlayback } from './usePlayback';
 import { Fretboard } from './components/Fretboard';
+import { useNeckWidth } from './useNeckWidth';
 import { PositionGrid } from './components/PositionGrid';
 import { Footer } from './components/Footer';
 import { SpaceBackdrop } from './components/SpaceBackdrop';
@@ -24,6 +25,7 @@ import { Splash } from './components/Splash';
 import { ToolsMenu } from './components/ToolsMenu';
 import { TunerModal } from './components/TunerModal';
 import { MetronomeModal } from './components/MetronomeModal';
+import { ProgressModal } from './components/ProgressModal';
 import { Modal } from './components/Modal';
 import { MenuIcon, GearIcon, HelpIcon, PlayIcon, StopIcon } from './components/Icons';
 import logoUrl from '../assets/scalemonster-logo.png';
@@ -43,6 +45,7 @@ export default function App() {
   const spec = INSTRUMENT_LIST.find((i) => i.id === s.instrument) ?? INSTRUMENT_LIST[0];
   const ctx = useMemo(() => getScaleContext(s.root, s.category, s.mode, instrument), [s.root, s.category, s.mode, instrument]);
   const model = useMemo(() => (ctx ? buildFretboard(ctx, s.exercise, s.strings) : null), [ctx, s.exercise, s.strings]);
+  useNeckWidth([model, s.view, s.instrument, s.stringCount, s.strings]);
   const pb = usePlayback(`${t(s.category)} ${t(s.mode)}`);
 
   const [sheet, setSheet] = useState(false);
@@ -52,6 +55,7 @@ export default function App() {
   const [cleared, setCleared] = useState(false);
   const [tuner, setTuner] = useState(false);
   const [metronome, setMetronome] = useState(false);
+  const [progress, setProgress] = useState(false);
   const toggleMain = useRef<() => void>(() => {});
 
   // O tema vale também para html/body (o fundo da página), não só para .app.
@@ -156,7 +160,12 @@ export default function App() {
             options={skinOptions(t)}
             onChange={(v) => s.setSkin(v as Skin)}
           />
-          <ToolsMenu t={t} onMetronome={() => setMetronome(true)} onTuner={() => setTuner(true)} />
+          <ToolsMenu
+            t={t}
+            onMetronome={() => setMetronome(true)}
+            onTuner={() => setTuner(true)}
+            onProgress={() => setProgress(true)}
+          />
           <button type="button" className="icon-btn" onClick={() => setHelp(true)} aria-label={t('btn_help')} title={t('btn_help')}>
             <HelpIcon width={18} height={18} />
           </button>
@@ -263,6 +272,7 @@ export default function App() {
               next={pb.activeId === 'main' ? pb.nextKey : null}
               feedback={feedbackMain ? { key: feedbackMain.key, kind: feedbackMain.kind, seq: feedbackMain.seq } : null}
               labels={{ hit: t('hit_label'), miss: t('miss_label') }}
+              reference={{ start: model.main.start, end: model.main.end }}
             />
             )}
             <p className="caption">
@@ -277,6 +287,7 @@ export default function App() {
           t={t}
           ctx={ctx}
           positions={model.positions}
+          mainRange={{ start: model.main.start, end: model.main.end }}
           activeId={pb.activeId}
           playingKey={pb.playingKey}
           nextKey={pb.nextKey}
@@ -318,6 +329,7 @@ export default function App() {
       )}
       {metronome && <MetronomeModal t={t} onClose={() => setMetronome(false)} />}
       {tuner && <TunerModal t={t} strings={instrument.strings} onClose={() => setTuner(false)} />}
+      {progress && <ProgressModal t={t} onClose={() => setProgress(false)} />}
       {help && <HelpModal t={t} onClose={() => setHelp(false)} />}
       {backing && <BackingTrackModal t={t} onClose={() => setBacking(false)} />}
       {pb.score && (

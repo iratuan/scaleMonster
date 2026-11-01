@@ -1,0 +1,94 @@
+/* Tela de progresso: badges, nível e backup. Usa só os tokens do tema, sem sombras (layout flat). */
+
+.progress__summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.progress__level {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.progress__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-3);
+}
+
+.badges {
+  list-style: none;
+  margin: var(--s-5) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--s-4);
+}
+
+.badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-4) var(--s-3);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  text-align: center;
+}
+
+.badge__img {
+  width: 120px;
+  height: auto;
+  max-width: 100%;
+}
+
+.badge--locked .badge__img {
+  filter: grayscale(1) brightness(0.45);
+  opacity: 0.6;
+}
+
+.badge__name {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.badge__req,
+.badge__date {
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+.badge--locked .badge__name {
+  color: var(--muted);
+}
+
+.progress__backup {
+  margin-top: var(--s-5);
+}
+
+.progress__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-3);
+  margin-top: var(--s-3);
+}
+
+.progress__actions .btn {
+  width: auto;
+}
+
+.progress__error {
+  color: var(--bad);
+}
+
+@media (max-width: 599px) {
+  .badges {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .badge__img {
+    width: 100px;
+  }
+}

@@ -48,15 +48,33 @@ export function getPositionWindows(rootIdx: number, cagedOffset: number, maxFret
  * O traste 0 (corda solta) recebe uma largura fixa menor, como no braço real.
  */
 export function fretWidths(start: number, end: number): number[] {
+  const imgWidth = neckImageWidth(start, end);
+  return fretSpans(start, end).map((fw) => (fw / imgWidth) * 100);
+}
+
+/** Largura, na escala da imagem do braço, da região entre start e end. */
+function neckImageWidth(start: number, end: number): number {
   const imgStart = start === 0 ? 0 : FRET_POS[start - 1];
   const imgEnd = FRET_POS[end] || 100;
-  let imgWidth = imgEnd - imgStart;
-  if (imgWidth <= 0) imgWidth = 100;
+  const width = imgEnd - imgStart;
+  return width > 0 ? width : 100;
+}
 
-  const widths: number[] = [];
+/** Largura de cada coluna de traste, na escala da imagem (o traste 0 é fixo). */
+function fretSpans(start: number, end: number): number[] {
+  const spans: number[] = [];
   for (let f = start; f <= end; f++) {
-    const fw = f === 0 ? 2.5 : FRET_POS[f] - FRET_POS[f - 1];
-    widths.push((fw / imgWidth) * 100);
+    spans.push(f === 0 ? 2.5 : FRET_POS[f] - FRET_POS[f - 1]);
   }
-  return widths;
+  return spans;
+}
+
+/**
+ * Larguras de cada coluna como % do braço inteiro de referência (refStart a refEnd).
+ * Um trecho com esta função tem os trastes na mesma escala do braço completo:
+ * a posição é um recorte fiel da escala, e não um braço esticado.
+ */
+export function fretWidthsOn(start: number, end: number, refStart: number, refEnd: number): number[] {
+  const refWidth = neckImageWidth(refStart, refEnd);
+  return fretSpans(start, end).map((fw) => (fw / refWidth) * 100);
 }

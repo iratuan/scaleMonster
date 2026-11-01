@@ -8,6 +8,8 @@ interface PositionGridProps {
   t: (key: string, vars?: Record<string, string | number>) => string;
   ctx: ScaleContext;
   positions: DiagramData[];
+  /** Braço completo: as posições são recortes dele, na mesma escala. */
+  mainRange: { start: number; end: number };
   activeId: string | null;
   playingKey: string | null;
   nextKey: string | null;
@@ -72,6 +74,7 @@ export function PositionGrid(p: PositionGridProps) {
               feedback={fb}
               labels={{ hit: p.t('hit_label'), miss: p.t('miss_label') }}
               compact
+              reference={p.mainRange}
             />
           </article>
         );

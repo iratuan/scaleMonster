@@ -1,4 +1,7 @@
 import type { ScoreSummary } from '../usePlayback';
+import type { Progress } from '../../core/stats';
+import { BADGES } from '../../core/progress';
+import { BADGE_IMAGES } from '../badgeArt';
 import { Modal } from './Modal';
 
 interface ScoreProps {
@@ -10,6 +13,13 @@ interface ScoreProps {
 }
 
 const formatTime = (sec: number) => `${Math.floor(sec / 60)}m ${sec % 60}s`;
+
+/** Linha de evolução: primeira rodada, subiu, caiu ou manteve, sempre com a taxa anterior. */
+const progressLine = (p: Progress, t: ScoreProps['t']) => {
+  if (p.kind === 'first') return t('score_progress_first');
+  if (p.kind === 'same') return t('score_progress_same', { prev: p.previousPct });
+  return t(p.kind === 'up' ? 'score_progress_up' : 'score_progress_down', { diff: p.diff, prev: p.previousPct });
+};
 
 /** 'corda-traste' -> texto localizado, ex.: "Corda 3 · Traste 5". */
 const formatWeak = (key: string, t: ScoreProps['t']) => {
@@ -39,6 +49,37 @@ export function ScoreModal({ score, t, cleared, onClose, onClear }: ScoreProps) 
             <span className="stat__label">{t('score_misses')}</span>
           </div>
         </div>
+
+        <div className="focus">
+          <p className="focus__title">{t('score_progress_title')}</p>
+          <p className="focus__scale">{progressLine(score.progress, t)}</p>
+        </div>
+
+        {score.newBadges.length > 0 && (
+          <div className="new-badges">
+            <p className="focus__title">{t('badge_new_title')}</p>
+            <ul className="new-badges__list">
+              {BADGES.filter((b) => score.newBadges.includes(b.id)).map((b) => (
+                <li key={b.id} className="new-badges__item">
+                  <img src={BADGE_IMAGES[b.level]} alt="" />
+                  <span>{b.name}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {score.missedNotes.length > 0 && (
+          <div className="focus">
+            <p className="focus__title">{t('score_missed_title')}</p>
+            <p className="body body--muted">
+              {score.missedNotes.map((k) => formatWeak(k, t)).join(' · ')}
+            </p>
+          </div>
+        )}
+        {score.missedNotes.length === 0 && score.total > 0 && (
+          <p className="body body--muted">{t('score_missed_none')}</p>
+        )}
 
         {a && !cleared && (
           <div className="trends">
