@@ -1,6 +1,6 @@
-# Distribuição web (1.4.3)
+# Distribuição web (1.5.0)
 
-O pacote `release/ScaleMonster-web-1.4.3.zip` contém o site pronto (pasta `dist`). Não há servidor
+O pacote `release/ScaleMonster-web-1.5.0.zip` contém o site pronto (pasta `dist`). Não há servidor
 Node ou PHP: é só um conjunto de arquivos estáticos.
 
 ## Conteúdo
@@ -31,7 +31,7 @@ e abra `http://localhost:8080`.
 ## Atualizações
 
 O service worker guarda o app para uso offline. Ao publicar uma nova versão, o cache muda de nome
-(`tutor-escalas-v15` nesta versão) e o navegador baixa a versão nova na próxima visita. Se algum usuário ainda vir a
+(`tutor-escalas-v17` nesta versão) e o navegador baixa a versão nova na próxima visita. Se algum usuário ainda vir a
 versão antiga, peça para recarregar a página com Ctrl+F5 (ou Cmd+Shift+R no Mac).
 
 ## Publicação no GitHub Pages (quando você decidir)

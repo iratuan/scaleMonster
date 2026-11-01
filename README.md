@@ -13,8 +13,8 @@
 </p>
 
 <p align="center">
-  <img alt="versão 1.4.3" src="https://img.shields.io/badge/vers%C3%A3o-1.4.3-f39c12">
-  <img alt="testes" src="https://img.shields.io/badge/testes-97%20passando-2ecc71">
+  <img alt="versão 1.5.0" src="https://img.shields.io/badge/vers%C3%A3o-1.5.0-f39c12">
+  <img alt="testes" src="https://img.shields.io/badge/testes-126%20passando-2ecc71">
   <img alt="React e TypeScript" src="https://img.shields.io/badge/React%20%2B%20TypeScript-61dafb">
   <img alt="Electron, Capacitor e web" src="https://img.shields.io/badge/Electron%20%7C%20Capacitor%20%7C%20PWA-333">
 </p>
@@ -42,6 +42,7 @@ ou no celular, sem instalar nada para usar a versão web.
 - 🎤 **Modo desafio:** toque no microfone e veja, nota por nota, se você acertou.
 - 🎵 **Ferramentas:** metrônomo com subdivisões e aceleração, afinador com referência A4 ajustável
   e backing track.
+- 🏅 **Progresso:** XP, sequência de dias e cinco badges por desempenho no desafio, com backup em arquivo.
 - 🎨 **Temas:** Escuro, Claro, Vintage, Madeira e **Draw**, um tema de papel, flat e minimalista.
 - 📱 **Qualquer tela:** desktop, celular em retrato e na horizontal. Funciona offline como app (PWA).
 
@@ -108,9 +109,9 @@ Os arquivos ficam na pasta `release/` e não estão no repositório. Use a vers�
 
 | Plataforma | Arquivo | Observação |
 | --- | --- | --- |
-| **Web** | `ScaleMonster-web-1.4.3.zip` ou [a versão online](https://iratuan.github.io/scaleMonster/) | Não exige instalação |
-| **Windows** | `ScaleMonster Setup 1.4.3.exe` (instalador) ou `ScaleMonster 1.4.3.exe` (portátil) | Sem assinatura: o SmartScreen pode avisar |
-| **Android** | `ScaleMonster-1.4.3-android.apk` | Versão de depuração; permita a instalação de fontes desconhecidas |
+| **Web** | `ScaleMonster-web-1.5.0.zip` ou [a versão online](https://iratuan.github.io/scaleMonster/) | Não exige instalação |
+| **Windows** | `ScaleMonster Setup 1.5.0.exe` (instalador) ou `ScaleMonster 1.5.0.exe` (portátil) | Sem assinatura: o SmartScreen pode avisar |
+| **Android** | `ScaleMonster-1.5.0-android.apk` | Versão de depuração; permita a instalação de fontes desconhecidas |
 | **macOS** | gerado a partir do código, num Mac | Veja [`docs/build-macos.md`](docs/build-macos.md) |
 
 Os hashes SHA-256 de cada versão estão em [`docs/evidencias/builds/`](docs/evidencias/builds/).
@@ -129,7 +130,7 @@ Depois abra o endereço que aparece no terminal.
 | Comando | O que faz |
 | --- | --- |
 | `npm run dev` | Servidor de desenvolvimento |
-| `npm test` | Roda os 97 testes automatizados |
+| `npm test` | Roda os 126 testes automatizados |
 | `npm run typecheck` | Verificação de tipos |
 | `npm run build` | Gera `dist/`, a versão web |
 | `npm run electron:build` | Gera o instalador e o portátil do Windows em `release/` |
@@ -178,7 +179,7 @@ O mesmo componente de braço desenha qualquer instrumento.
 
 ## Qualidade
 
-- **97 testes automatizados:** teoria musical, todas as combinações de instrumento e tom, posições,
+- **126 testes automatizados:** teoria musical, todas as combinações de instrumento e tom, posições,
   exercícios, partitura, digitação, julgamento de notas e interface.
 - **Verificação de tipos** sem erros.
 - **Evidências** em [`docs/evidencias/`](docs/evidencias/): capturas, resultados de testes e registros de build.
